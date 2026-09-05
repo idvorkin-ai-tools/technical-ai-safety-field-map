@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>How do AI companies test for safety? — Technical AI Safety, mapped</title>
+<meta name="description" content="How frontier labs decide a model is safe to ship: risk frameworks, capability thresholds, system cards, and where the gaps are." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>TECHNICAL&nbsp;AI&nbsp;SAFETY&nbsp;//&nbsp;FIELD&nbsp;MAP</div>
+  <a class="back" href="../index.html#u3">← field map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span class="box bb mono">UNIT 3 · DETECTING DANGER</span><span class="mono">chapter 2 · overview</span></div>
+  <h1>How do AI companies test for safety?</h1>
+  <div class="authors">BlueDot Impact · Technical AI Safety · unit 3, chapter 2</div>
+  <div class="paperlink" style="border-left-color:var(--def)"><span class="lbl">Course page</span><a href="https://bluedot.org/courses/technical-ai-safety/3/2" target="_blank" rel="noopener">How do AI companies test for safety? — BlueDot ↗</a></div>
+
+  <div class="tldr"><b>TL;DR —</b> Every frontier lab publishes a document saying, in effect, "if our model can do <em>X</em>, we will do <em>Y</em> before shipping it" — Anthropic's Responsible Scaling Policy, OpenAI's Preparedness Framework, DeepMind's Frontier Safety Framework, Meta's Advanced AI Scaling Framework. They agree on the shape (name a capability, set a threshold, run evals, attach safeguards) and differ on everything that gives it teeth: which risks count, how hard the evals try, who checks, and what happens when the answer is bad. Read one like a spec you have to implement, hunting for triggers and escape hatches.</div>
+
+  <p class="lead">Chapter 1 asked what dangerous capabilities look like in the abstract; this chapter grounds that in the artifacts the industry actually produces. If you want to work on evals, this is the demand side of the market — the frameworks are where a lab writes down which measurements it has promised to care about, and the system cards are where it reports what those measurements returned. Knowing that landscape is what turns "I built an eval" into "I built the eval that closes a stated gap in someone's threshold."</p>
+
+  <h2>The if-then shape, and why it's the shape</h2>
+  <p>You cannot certify a large model as safe: no proof, no exhaustive test set, and the capability surface keeps moving. So the industry converged on a weaker but tractable commitment — a conditional policy. Instead of "this model is safe," a lab asserts "we measured capability <em>C</em>, it is below threshold <em>T</em>, and here is the safeguard package we would attach if it crossed." METR's 2023 write-up is the cleanest statement of that logic, and the reading to start with: it gives you five slots — limits, protections, evaluation, response, accountability — to check any real framework against.</p>
+
+  <blockquote class="q"><span>"An RSP aims to keep <em>protective measures</em> ahead of whatever <em>dangerous capabilities</em> AI systems have."</span><span class="cite">— <a href="https://metr.org/blog/2023-09-26-rsp/" target="_blank" rel="noopener">Responsible Scaling Policies</a>, METR (2023)</span></blockquote>
+
+  <p>The engineering intuition is a tripwire, not a seal of approval. Its value lives entirely in whether the wire sits low enough to fire before the harm, is sensitive enough to fire at all, and is connected to something that actually stops the train.</p>
+
+  <h2>Four labs, four dialects</h2>
+  <p><b>Anthropic — Responsible Scaling Policy.</b> Oldest of the four (v1.0, September 2023) and most revised: the <a href="https://www.anthropic.com/rsp-updates" target="_blank" rel="noopener">changelog</a> shows a full rewrite at v3.0 in February 2026 and four revisions since, with <a href="https://www.anthropic.com/responsible-scaling-policy" target="_blank" rel="noopener">v3.4</a> effective 8 July 2026. Discrete AI Safety Levels (ASL-2, ASL-3) bundle deployment and security safeguards together; Capability Thresholds in CBRN uplift and AI R&D acceleration decide which level applies. Watch the security half — ASL-3 is as much about who can steal the weights as about what a user can extract from the chat box.</p>
+  <p><b>OpenAI — Preparedness Framework.</b> <a href="https://cdn.openai.com/pdf/18a02b5d-6b67-4cec-ab64-68cdfbddebcd/preparedness-framework-v2.pdf" target="_blank" rel="noopener">Version 2</a> collapses the old four-colour scale to two thresholds, High and Critical, over three Tracked Categories: bio/chem, cybersecurity, AI self-improvement. High demands sufficient safeguards before <em>deployment</em>; Critical demands them during <em>development</em> too. Its best invention is the Research Categories tier — an explicit holding pen for risks judged real but not yet measurable.</p>
+  <p><b>Google DeepMind — Frontier Safety Framework.</b> Now at <a href="https://deepmind.google/frontier-safety/" target="_blank" rel="noopener">v3.1</a> (17 April 2026), organised around Critical Capability Levels across misuse, ML R&D and misalignment — and the only one of the four with a CCL for harmful manipulation. The v3 line also added Tracked Capability Levels, a lower rung meant to catch a trend before it reaches the critical one: the closest thing in the set to a leading indicator.</p>
+  <p><b>Meta — Advanced AI Scaling Framework.</b> Note the rename: what the course calls Meta's "Frontier AI Framework" was superseded on <a href="https://ai.meta.com/blog/scaling-how-we-build-test-advanced-ai/" target="_blank" rel="noopener">8 April 2026</a> by the <a href="https://ai.meta.com/static-resource/Meta_Advanced-AI-Scaling-Framework-v2" target="_blank" rel="noopener">Advanced AI Scaling Framework v2</a>, which adds Loss of Control alongside cyber and chem-bio. Its structure is the odd one out, and worth the contrast: outcomes-led, decomposing catastrophic outcomes into threat scenarios, then enabling capabilities, then evaluations — the inverse of starting from a benchmark and asking what it implies.</p>
+
+  <h2>Where the claims get tested — and where they don't</h2>
+  <p>A framework is a promise; a system card is the report against it — the eval suites actually run, the elicitation effort applied (weak elicitation makes any threshold look comfortably far away), and the red-team findings. Three questions separate a serious card from a press release. Was the model tested with scaffolding, tools and fine-tuning, or bare? Did anyone outside the company get pre-deployment access and time to be adversarial? Is there a number you could recompute, or only an adjective?</p>
+  <p>The weak points are structural. Every threshold is self-set and self-assessed, "sufficient safeguards" is graded by the party that wants to ship, and the same party revises the document — which is why a version history showing both tightenings and loosenings tells you more than the current text. And the whole apparatus targets catastrophic misuse: ordinary harms, and most misalignment, are out of scope by construction.</p>
+
+  <div class="callout">Carry this away: read a framework by grepping its <em>verbs</em>, not its risk taxonomy. "We will pause development" is a commitment; "we will consider", "as appropriate", "where feasible" are the seams. The gap between a lab's threshold list and its escape-hatch language is the best single predictor of whether an eval you build will change a shipping decision.</div>
+
+  <h2>A note on the course's first reading</h2>
+  <p>AI Lab Watch scores seven companies on seven axes — risk assessment, scheming-risk prevention, safety research, misuse prevention, security, info sharing, planning. Still the fastest side-by-side view of the axes, but every score is a 2025 snapshot; use a current tracker for present-day claims.</p>
+
+  <blockquote class="q"><span>"I stopped maintaining this website in September 2025."</span><span class="cite">— <a href="https://ailabwatch.org/about" target="_blank" rel="noopener">About</a>, AI Lab Watch, Zach Stein-Perlman (2025)</span></blockquote>
+
+  <h2 id="readings">Readings, linked</h2>
+  <p>The course lists two resources and sets no time budget for either. Read METR first — it gives you the checklist; the dashboard is more useful once you know what the columns mean.</p>
+  <ul class="readings">
+    <li><a href="https://ailabwatch.org/" target="_blank" rel="noopener">AI Lab Watch</a> — Zach Stein-Perlman (2024–2025) · no time budget listed · A scorecard grading Anthropic, DeepMind, OpenAI, Meta, xAI, Microsoft and DeepSeek on seven safety axes. Assigned because it makes "companies differ" concrete rather than rhetorical. <b>Stale:</b> unmaintained since September 2025 — see the tracker below for current numbers.</li>
+    <li><a href="https://metr.org/blog/2023-09-26-rsp/" target="_blank" rel="noopener">Responsible Scaling Policies</a> — METR: Beth Barnes, Hjalmar Wijk, Lawrence Chan (2023) · no time budget listed · The spec for what a good RSP contains: limits, protections, evaluation, response, accountability. Assigned because it turns "is this framework any good?" into five answerable questions.</li>
+  </ul>
+
+  <h2 id="exercises">Exercises</h2>
+  <ol class="exercises">
+    <li><b>Audit one company against one capability</b> — Take the dangerous capability you picked in the previous chapter (bio/chem uplift, offensive cyber, autonomous replication, AI R&D acceleration, manipulation) and pick exactly one of the four labs. Then work through that lab's three artifacts in order: the framework, to find the threshold that governs your capability and the safeguards promised above it; the most recent system card for a frontier model, to find what was actually measured against that threshold and by whom; and any red-team or external-evaluation reporting, to see whether an adversary with access agreed. Write it up as a short memo. <em>What a good answer has:</em> the exact threshold language quoted, with a version number and date; the specific eval or benchmark used and whether elicitation included tools/scaffolding/fine-tuning; a named external evaluator or an explicit note that testing was internal-only; and — the part most people skip — one concrete gap stated as a testable claim, e.g. "the threshold covers uplift to a novice but no eval measures uplift to a trained expert." Recommended pairing: one lab from {Anthropic, OpenAI, DeepMind} against Meta, because Meta's outcomes-led structure makes the others' capability-led assumptions visible.</li>
+    <li><b>Field map extra — the verb diff</b> — Pull two consecutive versions of the same framework (Anthropic's changelog makes this easiest: v3.0 vs v3.4) and diff the commitment language, not the taxonomy. Classify each change as a tightening, a loosening, or a clarification. <em>What a good answer has:</em> a table of the changes with your classification and a one-line justification each, plus a verdict on whether revisions have net-tightened or net-loosened, and whether any revision immediately preceded a launch.</li>
+    <li><b>Field map extra — build a threshold probe</b> <span class="code">code</span> — Pick one threshold you found in exercise 1 and build a small eval that measures it, then report where your own measurement is weakest. <em>What a good answer has:</em> 15–30 tasks with a deterministic grader, a documented refusal-vs-inability distinction, at least two elicitation conditions (bare prompt vs. tool-using agent scaffold) so you can show the elicitation gap, and an honest section on what your eval would miss. <em>Start here:</em> (1) use <a href="https://inspect.aisi.org.uk/" target="_blank" rel="noopener">Inspect</a> from the UK AI Security Institute, or plain <code>pytest</code> plus a provider SDK if you want no framework; (2) choose a capability whose ground truth is checkable — CTF-style cyber tasks or a code-exploit reproduction beat bio, which you should not build tasks for; (3) write tasks at three difficulty tiers so the score is a curve, not a pass/fail; (4) run condition A, single prompt, and condition B, a ReAct-style loop with a shell or Python tool, on a model you can hit cheaply — a small open model on a free Colab GPU, or a hosted mini/flash tier; (5) plot both conditions and note the gap; (6) write the paragraph a system card would need to include your result, and the paragraph a skeptic would write to dismiss it.</li>
+  </ol>
+
+  <h2>Go deeper</h2>
+  <ul>
+    <li><a href="https://metr.org/common-elements" target="_blank" rel="noopener">Common Elements of Frontier AI Safety Policies</a> — METR (December 2025). Compares twelve developers' policies across nine elements. The best single upgrade over the course's stale dashboard, and it names which companies promised a framework at the 2024 Seoul Summit and never published one.</li>
+    <li><a href="https://tracker.safer-ai.org/" target="_blank" rel="noopener">SaferAI Frontier Risk Management Tracker</a> — SaferAI, current as of July 2026. Rates twelve companies on risk identification, analysis, treatment and governance. Sobering calibration: the top score is 35%, against 59% for "everyone adopts the best practice that already exists somewhere."</li>
+    <li><a href="https://cdn.openai.com/pdf/18a02b5d-6b67-4cec-ab64-68cdfbddebcd/preparedness-framework-v2.pdf" target="_blank" rel="noopener">Preparedness Framework v2 (PDF)</a> — OpenAI (April 2025). Worth reading in full for its footnoted definition of "severe harm" — thousands of deaths or hundreds of billions in damage. Making the bar explicit is rarer than it should be, and it tells you exactly what the framework is <em>not</em> for.</li>
+    <li><a href="https://deepmind.google/blog/strengthening-our-frontier-safety-framework/" target="_blank" rel="noopener">Strengthening our Frontier Safety Framework</a> — Google DeepMind. The announcement post for the v3 line; the clearest short explanation of Critical vs. Tracked Capability Levels and why a second, lower rung was needed.</li>
+    <li><a href="https://ai.meta.com/blog/scaling-how-we-build-test-advanced-ai/" target="_blank" rel="noopener">Scaling How We Build and Test Our Most Advanced AI</a> — Meta (April 2026). Introduces the Advanced AI Scaling Framework and its Safety &amp; Preparedness Reports. Read it for the outcomes-led method and for the rename the course text predates.</li>
+  </ul>
+
+  <div class="callout">Next: <a class="lnk" href="../unit3/ch3.html">Option 1: Anthropic</a> · Back to the <a class="lnk" href="../index.html#u3">map</a>.</div>
+</main>
+<footer>Original explanation of BlueDot Impact's Technical AI Safety course, unit 3 chapter 2. Course text © BlueDot Impact; this page links, it does not copy.</footer>
+</body>
+</html>

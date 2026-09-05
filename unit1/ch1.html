@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Making AI go well — Technical AI Safety, mapped</title>
+<meta name="description" content="Why the Technical AI Safety course exists: it takes the strategy question and asks the mechanism question — what are we building, and how." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>TECHNICAL&nbsp;AI&nbsp;SAFETY&nbsp;//&nbsp;FIELD&nbsp;MAP</div>
+  <a class="back" href="../index.html#u1">← field map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span class="box bb mono">UNIT 1 · THE TECHNICAL CHALLENGE WITH AI</span><span class="mono">chapter 1 · orientation, ~5 min</span></div>
+  <h1>Making AI go well</h1>
+  <div class="authors">BlueDot Impact · Technical AI Safety · unit 1, chapter 1</div>
+  <div class="paperlink" style="border-left-color:var(--off)"><span class="lbl">Course page</span><a href="https://bluedot.org/courses/technical-ai-safety/1/1" target="_blank" rel="noopener">Making AI go well — BlueDot ↗</a></div>
+
+  <div class="tldr"><b>TL;DR —</b> The hinge between BlueDot's strategy course and its technical one. Strategy asks which futures we want and which plans could get there; this course asks what those plans quietly assume — what are these systems made of, and which safety properties can we actually engineer into them? It fixes the scope (training, evaluation, interpretability, containment), names four exclusions, and previews the output: a kill chain and a one-page fundable plan. Remember: every safety <em>plan</em> bottoms out in a <em>technique</em>, and techniques have failure modes plans do not mention.</div>
+
+  <p class="lead">Strategy documents about advanced AI share a soft spot. They describe a target state — "stays under human control", "refuses to help with a bioweapon", "we can tell whether it is scheming" — and move on, as if that were a configuration setting rather than an open research problem. This chapter announces the course is going to look under that assumption. It teaches nothing technical yet; it sets the terms of a four-unit argument about what today's techniques can and cannot deliver.</p>
+
+  <h2>Two questions that sound like one</h2>
+  <p>"How do we make AI go well?" is what the <a class="lnk" href="https://bluedot.org/courses/agi-strategy" target="_blank" rel="noopener">AGI strategy course</a> answers, in the currency of actors and incentives: who holds the compute, which threat pathways are live, which plan you are betting on. That yields claims like "build defences and diffuse AI" or "hand control to an aligned superintelligence." Both are coherent. Neither tells you how to build a defence or verify an alignment.</p>
+  <p>The technical question is narrower and far less forgiving: given a transformer trained on internet-scale data by gradient descent and then shaped by feedback, which safety properties can you actually cause to hold, how confidently, and how does that confidence decay as capability rises? That is what separates a plan from a proposal — and where most of the bad news lives, which is why units 2–5 are about techniques and their gaps rather than ambitions.</p>
+
+  <h2>Failures at the technical layer are silent at the strategy layer</h2>
+  <p>A regime requiring labs to test for dangerous capabilities is only as strong as the evals: if an eval measures "can the model do X when asked plainly" and the threat is "will it do X when it has reason to hide", the regime reports green while risk is unchanged. A plan resting on human oversight is only as strong as the oversight — which gets harder exactly as the overseen system outgrows the overseer. Strategy inherits every weakness of the mechanisms it delegates to, and cannot detect them in its own vocabulary.</p>
+  <blockquote class="q off"><span>"Machine learning (ML) systems are rapidly increasing in size, are acquiring new capabilities, and are increasingly deployed in high-stakes settings."</span><span class="cite">— <a href="https://arxiv.org/abs/2109.13916" target="_blank" rel="noopener">Unsolved Problems in ML Safety</a>, Hendrycks, Carlini, Schulman &amp; Steinhardt (2021)</span></blockquote>
+  <p>Five years old and now an understatement — the same argument in a line: capability, novelty and stakes rise together, each eroding a different assumption safety rests on.</p>
+
+  <h2>The spine: defence in depth</h2>
+  <p>The structure carried over from strategy is layered — stop the behaviour being learned, constrain the capability if it is learned, survive the action if it is taken anyway. The course walks those layers asking what tooling exists at each: training-time intervention (unit 2), evaluation (unit 3), reading the internals (unit 4), containment (unit 5, which assumes the earlier layers leaked).</p>
+  <p>Read that as a chain, not a menu. No layer is sufficient alone; the real question is whether the failure modes are <em>independent</em>. If a capable model defeats your training, your evals and your monitor for the same underlying reason — all three graded by systems weaker than it is — stacking them buys much less than the diagram suggests. Unit 5's kill-chain exercise makes you confront that on your own example.</p>
+
+  <h2>The four exclusions</h2>
+  <p>The chapter is explicit about what it will not cover. Each cut is defensible; three leak:</p>
+  <ul>
+    <li><b>Policy detail</b> — deferred to a separate course, on the theory that the substrate comes first. But a threshold in a frontier safety framework is a technical claim in legal clothes.</li>
+    <li><b>Compute governance</b> — the cleanest cut: a supply-chain and mechanism-design problem, not a model-behaviour one.</li>
+    <li><b>AI security</b> — weight theft and self-exfiltration. Load-bearing: every deployment-time mitigation in unit 5 assumes the weights stayed where you put them.</li>
+    <li><b>ML fundamentals</b> — assumed, not taught. If backprop, tokenisation, pretraining versus post-training and RL "policy" are not comfortable, do BlueDot's <a class="lnk" href="https://bluedot-impact.notion.site/AI-Foundations-293f8e69035380f29863c4c92c41fac7?pvs=74" target="_blank" rel="noopener">AI foundations</a> modules first; unit 4 is unreadable without them.</li>
+  </ul>
+
+  <div class="callout off">What to carry out of an orientation chapter: for every technique the course introduces, write the one sentence saying what would have to be true about the model for it to <em>stop</em> working. It is almost always "the model is capable enough to notice it is being trained, tested or watched." The techniques differ; the sentence recurs — noticing that is most of what unit 1 installs.</div>
+
+  <h2 id="readings">Readings, linked</h2>
+  <p>This chapter has no Resources block and no assigned reading time — it is a two-screen orientation page plus a short video. What it does carry is a set of back-links into the strategy course and one prerequisite; start with the video, and only detour into the strategy chapters if the "defence in depth" framing is new to you.</p>
+  <ul class="readings">
+    <li><a href="https://www.youtube.com/watch?v=mSMBBiEI2N8" target="_blank" rel="noopener">Technical AI Safety Unit 1: The technical challenge with AI</a> — BlueDot Impact (2025) · 1 min 33 · The embedded intro video. Sets the unit's framing in less time than reading about it takes; verified as public on YouTube, no login needed.</li>
+    <li><a href="https://bluedot.org/courses/agi-strategy" target="_blank" rel="noopener">AGI Strategy (course)</a> — BlueDot Impact · ~25h · The prior course this chapter hands off from. Free and pay-what-you-want; the chapter assumes its conclusions, not its detail.</li>
+    <li><a href="https://bluedot.org/courses/agi-strategy/2/1" target="_blank" rel="noopener">Drivers of AI progress</a> — BlueDot, AGI Strategy unit 2 ch 1 · 30 min · Compute, data and algorithms as the three inputs. Assigned so that "the models keep getting better" is a mechanism you can reason about rather than a mood.</li>
+    <li><a href="https://bluedot.org/courses/agi-strategy/3/1" target="_blank" rel="noopener">Pathways to harm</a> — BlueDot, AGI Strategy unit 3 ch 1 · ~55 min · The threat-model catalogue: power concentration, gradual disempowerment, pandemics, infrastructure collapse. Supplies the "harm" that safety techniques are measured against.</li>
+    <li><a href="https://bluedot.org/courses/agi-strategy/4/1" target="_blank" rel="noopener">AGI Strategy unit 4 ch 1 — “What might success look like?”</a> — BlueDot · 5 min · Linked from this chapter as "plans for making AI go well"; the live page now opens unit 4 (Defence in Depth) with a success-picture chapter of the same name as TAS 1.2. Read it as the plans-level companion to the next chapter here.</li>
+    <li><a href="https://bluedot.org/courses/agi-strategy/4/2" target="_blank" rel="noopener">Building defences</a> — BlueDot, AGI Strategy unit 4 ch 2 · The layered-defence chapter this course is structurally built on: prevent → constrain → withstand. The single most useful back-link on the page.</li>
+    <li><a href="https://bluedot-impact.notion.site/AI-Foundations-293f8e69035380f29863c4c92c41fac7?pvs=74" target="_blank" rel="noopener">AI Foundations</a> — BlueDot Impact (Notion) · self-paced · The stated prerequisite for anyone without working ML background. Public Notion page, no login; it renders only with JavaScript on.</li>
+  </ul>
+
+  <h2 id="exercises">Exercises</h2>
+  <p>This chapter ships no exercises — it is pure orientation, and the course's first real work lands in chapter 1.4. Two field-map extras below, because an orientation chapter is exactly where a cheap pre-commitment pays off later.</p>
+  <ol class="exercises">
+    <li><b>Write your prior before the course argues with it (field map extra)</b> — In under 300 words, answer three questions in writing and date the file: (a) which of the strategy course's plans do you currently believe is most likely to actually work — government control, aligned superintelligence, or defend-and-diffuse; (b) which technical layer you expect to be strongest today — training, evals, interpretability, or containment; (c) what is the largest capability jump you believe current techniques would survive without a qualitative change in approach. <em>What a good answer has:</em> a specific commitment on each, each with a falsifier — the observation that would move you. Re-open the file after unit 5 and diff it; the value is entirely in the diff, and a prior you cannot be wrong about scores zero.</li>
+    <li><b>Sanity-check the prerequisite (field map extra)</b> <span class="code">code</span> — Before unit 2, confirm the ML baseline the course assumes rather than discovering the gap in unit 4. Load a small open model and reproduce four things end to end: tokenisation, a forward pass, next-token logits, and a single gradient step. <em>What a good answer has:</em> a notebook where you can point at the tensor that is a logit distribution and say what its shape means, plus one sentence distinguishing pretraining from post-training in terms of what the loss is computed against. <em>Start here:</em> (1) free Colab or any laptop with 8&nbsp;GB RAM; <span class="mono">pip install transformers torch</span>. (2) Use a genuinely small model — <span class="mono">gpt2</span> or <span class="mono">Qwen/Qwen2.5-0.5B-Instruct</span>; nothing here needs a frontier model. (3) Tokenise a sentence, print the token ids and the decoded pieces, and find a word that splits into three tokens. (4) Run the model, take <span class="mono">outputs.logits[0, -1]</span>, softmax it, and print the top-10 next tokens with probabilities. (5) Compute the loss against the true next token and call <span class="mono">loss.backward()</span>; print the norm of the gradient on one weight matrix. (6) Write the one-sentence pretraining-vs-post-training answer at the top of the notebook. If any step needed a tutorial, do the <a class="lnk" href="https://bluedot-impact.notion.site/AI-Foundations-293f8e69035380f29863c4c92c41fac7?pvs=74" target="_blank" rel="noopener">AI Foundations</a> modules before unit 2.</li>
+  </ol>
+
+  <h2>Go deeper</h2>
+  <ul>
+    <li><a class="lnk" href="https://arxiv.org/abs/2504.01849" target="_blank" rel="noopener">An Approach to Technical AGI Safety and Security</a> — Shah, Irpan, Turner, Wang, Conmy, Lindner et al., Google DeepMind (2025). The closest thing to this course's argument written as a single research agenda: misuse and misalignment split apart, then model-level and system-level mitigations stacked. Read the introduction now, the rest after unit 5.</li>
+    <li><a class="lnk" href="https://arxiv.org/abs/2109.13916" target="_blank" rel="noopener">Unsolved Problems in ML Safety</a> — Hendrycks, Carlini, Schulman &amp; Steinhardt (2021). The four-bucket taxonomy — robustness, monitoring, alignment, systemic safety — that most later field maps, including this course's unit structure, are variations on.</li>
+    <li><a class="lnk" href="https://arxiv.org/abs/1606.06565" target="_blank" rel="noopener">Concrete Problems in AI Safety</a> — Amodei, Olah, Steinhardt, Christiano, Schulman &amp; Mané (2016). The paper that made "specification, robustness, oversight" concrete enough to fund. Dated in its examples and startlingly current in its failure modes; useful for seeing which of the 2016 problems are still open.</li>
+    <li><a class="lnk" href="https://www.anthropic.com/news/core-views-on-ai-safety" target="_blank" rel="noopener">Core Views on AI Safety</a> — Anthropic (2023). A lab stating in public which safety bets it is making and under which assumptions about difficulty. Worth reading now as the genre unit 3 will teach you to audit rather than take at face value.</li>
+    <li><a class="lnk" href="https://bluedot.org/courses" target="_blank" rel="noopener">BlueDot Impact — all courses</a>. Where the excluded scope actually lives: policy, compute governance and the foundations modules are separate offerings, all free.</li>
+  </ul>
+
+  <div class="callout">Next: <a class="lnk" href="../unit1/ch2.html">What might success look like?</a> · Back to the <a class="lnk" href="../index.html#u1">map</a>.</div>
+</main>
+<footer>Original explanation of BlueDot Impact's Technical AI Safety course, unit 1 chapter 1. Course text © BlueDot Impact; this page links, it does not copy.</footer>
+</body>
+</html>
