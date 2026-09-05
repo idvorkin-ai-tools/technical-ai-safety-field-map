@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Can we train AI to be safe? — Technical AI Safety, mapped</title>
+<meta name="description" content="Why safe behaviour in an LLM has to be trained rather than coded, and the three levers — data filtering, human feedback, scalable oversight — this unit examines." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>TECHNICAL&nbsp;AI&nbsp;SAFETY&nbsp;//&nbsp;FIELD&nbsp;MAP</div>
+  <a class="back" href="../index.html#u2">← field map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span class="box wb mono">UNIT 2 · TRAINING SAFER MODELS</span><span class="mono">chapter 1 · unit overview</span></div>
+  <h1>Can we train AI to be safe?</h1>
+  <div class="authors">BlueDot Impact · Technical AI Safety · unit 2, chapter 1</div>
+  <div class="paperlink" style="border-left-color:var(--off)"><span class="lbl">Course page</span><a href="https://bluedot.org/courses/technical-ai-safety/2/1" target="_blank" rel="noopener">Can we train AI to be safe? — BlueDot ↗</a></div>
+
+  <div class="tldr"><b>TL;DR —</b> A language model's behaviour is not written by anyone; it is induced by an optimisation process over data, an objective, and compute. So you cannot make it safe by adding a rule, the way you would add an <span class="mono">if</span> to a payments service — you can only reshape the pressures the optimiser is under. This unit walks the three places you can apply that pressure, in the order training touches them: the corpus, the feedback that shapes the policy afterwards, and how you keep supervising once the model outclasses the supervisor. Each works; each is a proxy for what you actually wanted; the rest of the unit is the gap between proxy and thing.</div>
+
+  <p class="lead">This is the unit's one-screen framing chapter — no readings, no exercises. It earns its place by naming the taxonomy the next three chapters hang off, so it is worth being precise about what that taxonomy is cutting.</p>
+
+  <h2>Safety here is a training problem, not a programming problem</h2>
+  <p>The intuition most engineers arrive with is wrong in a specific, load-bearing way. In ordinary software the gap between spec and implementation is a bug you can localise: some line does the wrong thing, you find it, you change it. Neural network behaviour has no such line. The weights are the output of a search, and the only handles on that search are the corpus, the loss, and the optimiser's budget. Nobody wrote "refuse to help synthesise a nerve agent" anywhere; a refusal is a behaviour that fell out of gradient descent on a lot of examples, and it can fall back out again under a prompt nobody anticipated.</p>
+  <p>The practical consequence: <em>every</em> safety property you get from training is statistical. You are not adding a guarantee, you are shifting a distribution. Hence "training <em>safer</em> models", and hence chapters 2–4 spending as much time on failure modes as on techniques.</p>
+
+  <h2>Three levers, in the order the training run touches them</h2>
+  <p><b>Input data filtering.</b> The earliest and bluntest intervention: decide what the model is allowed to learn from in the first place. If a capability is never in the corpus, there is nothing for fine-tuning to elicit later. The strongest recent result here is <a href="https://arxiv.org/abs/2508.06601" target="_blank" rel="noopener">Deep Ignorance</a>, which filtered dual-use biology content out of pretraining and found the resulting open-weight models substantially resisted adversarial fine-tuning — the safety property survived people trying to train it away, which is exactly what post-hoc refusal training does not do. The catch is also instructive:</p>
+  <blockquote class="q off"><span>"…can still leverage such information when it is provided in context."</span><span class="cite">— <a href="https://arxiv.org/abs/2508.06601" target="_blank" rel="noopener">Deep Ignorance: Filtering Pretraining Data Builds Tamper-Resistant Safeguards into Open-Weight LLMs</a>, O'Brien et al. (2025)</span></blockquote>
+  <p>Filtering removes knowledge, not the capacity to use it. Paste the paper into the prompt and the ignorance evaporates — a real defence with a precisely known hole.</p>
+  <p><b>Human feedback.</b> Once a base model exists, you shape it toward the behaviour you want by having people rank outputs and training on those preferences — RLHF and its descendants. It is stunningly sample-efficient at behaviour change: InstructGPT reported that "outputs from the 1.3B parameter InstructGPT model are preferred to outputs from the 175B GPT-3, despite having 100x fewer parameters" (<a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">Ouyang et al., 2022</a>). But note what the objective literally is: <em>what a rater clicked approve on</em>. Persuasive-and-wrong beats correct-and-dull under that objective, and sycophancy is not a bug in the implementation — it is the optimum of the stated loss.</p>
+  <p><b>Scalable oversight.</b> The previous lever assumes the rater can tell which output is better. Push capability far enough and that breaks: on a 3,000-line diff or a novel proof, the rater is no longer the more competent party. Scalable oversight is the family of techniques for extracting a reliable signal anyway — decomposing the task, having models critique each other, or replacing human judgment with a written rule set the model applies to itself, as in <a href="https://arxiv.org/abs/2212.08073" target="_blank" rel="noopener">Constitutional AI</a>. It is the lever that has to work for anything beyond current models, and the least settled of the three.</p>
+
+  <div class="callout">The load-bearing idea to carry into the rest of the unit: each lever optimises a <em>measurable stand-in</em> for safety — corpus membership, rater approval, a critique model's verdict. None of them is safety. Every failure mode in chapters 2–4 is some version of the model finding the part of the stand-in's domain where it comes apart from the thing it stood in for.</div>
+
+  <h2>What this framing leaves out</h2>
+  <p>All three levers act during training. They exclude inference-time defences — classifiers and monitors sitting in front of and behind the model — and they say nothing about whether you can <em>tell</em> a model is unsafe, which is unit 3's evaluations and unit 4's interpretability. Read this unit as "how far does shaping the training run get you", with the honest answer arriving at the end of chapter 4.</p>
+
+  <h2 id="readings">Readings, linked</h2>
+  <p>This chapter assigns no readings — it is a framing screen for the unit. What follows is the unit's own embedded video plus the three chapters it introduces, with the course's time budget; start with chapter 2, which is the earliest lever and the shortest chapter.</p>
+  <ul class="readings">
+    <li><a href="https://www.youtube.com/watch?v=o1jxMLEFr9I" target="_blank" rel="noopener">Technical AI Safety Unit 2: Training safer models</a> — BlueDot Impact (video, embedded in the chapter) · short · The course's own spoken version of the three-lever framing on this page.</li>
+    <li><a href="https://bluedot.org/courses/technical-ai-safety/2/2" target="_blank" rel="noopener">Feeding AI 'good' data</a> — BlueDot Impact · 50 min · Lever one: curation and filtering of the pretraining corpus, and what filtering can and cannot remove.</li>
+    <li><a href="https://bluedot.org/courses/technical-ai-safety/2/3" target="_blank" rel="noopener">Teaching AI right from wrong</a> — BlueDot Impact · 1 h 10 min · Lever two: RLHF, preference models, and the failure modes of optimising rater approval.</li>
+    <li><a href="https://bluedot.org/courses/technical-ai-safety/2/4" target="_blank" rel="noopener">More safety techniques</a> — BlueDot Impact · 1 h 25 min · Lever three and the leftovers: scalable oversight, constitutional methods, and where the whole stack still leaks.</li>
+  </ul>
+
+  <h2 id="exercises">Exercises</h2>
+  <p>This chapter has no exercises in the course — it is a unit overview. Two field-map extras below, both doable in an afternoon, that make the three-lever taxonomy concrete before you meet it chapter by chapter.</p>
+  <ol class="exercises">
+    <li><b>Attribute the refusal</b> <span class="code">code</span> <em>(field map extra)</em> — Take a small open-weight instruct model and its matching base model (e.g. <a href="https://huggingface.co/Qwen/Qwen2.5-1.5B" target="_blank" rel="noopener">Qwen2.5-1.5B</a> and <span class="mono">Qwen2.5-1.5B-Instruct</span>; both fit in a free Colab T4 in bf16). Write 20 prompts spanning clearly-fine, borderline, and clearly-harmful, run both models, and classify each response as complies / refuses / incoherent. The question you are answering: which of this unit's three levers is doing the work? A base model that never produces the content at all points at data; a base model that happily produces it while the instruct model refuses points at feedback. <em>What a good answer has:</em> a 20×2 table, an explicit count of the four cells (base-complies/instruct-refuses being the interesting one), and at least one case where you were surprised, with a hypothesis. <em>Start here:</em> (1) <span class="mono">pip install transformers accelerate torch</span>; (2) load both models with <span class="mono">AutoModelForCausalLM</span>, greedy decoding, <span class="mono">max_new_tokens=200</span>; (3) prompt the base model in completion form and the instruct model through its chat template — this asymmetry matters and is half the lesson; (4) score by hand, 40 outputs is fast; (5) re-run your three most interesting harmful prompts with the harmful content pasted into the prompt as context, and note whether refusal survives.</li>
+    <li><b>Write the constitution you would actually ship</b> <em>(field map extra)</em> — Pick a narrow deployed assistant you know well (a coding agent, a customer-support bot, a medical-triage front end) and draft 8–12 numbered principles a model could apply to critique and revise its own drafts, in the style of <a href="https://arxiv.org/abs/2212.08073" target="_blank" rel="noopener">Constitutional AI</a>. Then adversarially review your own list: for each principle, write the request that satisfies its letter and violates its intent. <em>What a good answer has:</em> principles that are checkable by reading a single response (not "be helpful"), at least two that visibly conflict with each other plus a stated tie-break rule, and an honest note on which principles your own attacks broke — the conflicts and the breakages are the actual output of this exercise, not the list.</li>
+  </ol>
+
+  <h2>Go deeper</h2>
+  <ul>
+    <li><a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">Training language models to follow instructions with human feedback</a> — Ouyang et al., OpenAI (2022). The InstructGPT paper; the canonical description of lever two and the reason every deployed chat model is post-trained this way.</li>
+    <li><a href="https://arxiv.org/abs/2212.08073" target="_blank" rel="noopener">Constitutional AI: Harmlessness from AI Feedback</a> — Bai et al., Anthropic (2022). Replaces the human labeller with a written rule set and a critique loop — the most deployed instance of lever three.</li>
+    <li><a href="https://arxiv.org/abs/2508.06601" target="_blank" rel="noopener">Deep Ignorance</a> — O'Brien et al. (2025). The strongest evidence that lever one buys something the other two do not: tamper-resistance against adversarial fine-tuning of open weights.</li>
+    <li><a href="https://arxiv.org/abs/2211.03540" target="_blank" rel="noopener">Measuring Progress on Scalable Oversight for Large Language Models</a> — Bowman et al., Anthropic (2022). Turns "can a human supervise a stronger model" into an experiment with a number, which is what makes lever three tractable at all.</li>
+    <li><a href="https://arxiv.org/abs/2312.09390" target="_blank" rel="noopener">Weak-to-Strong Generalization</a> — Burns et al., OpenAI Superalignment (2023). The empirical analogue of the superhuman-supervision problem: fine-tune a strong model on a weak model's labels and measure how much of the strong model's own competence you recover.</li>
+  </ul>
+
+  <div class="callout">Next: <a class="lnk" href="../unit2/ch2.html">Feeding AI ‘good’ data</a> · Back to the <a class="lnk" href="../index.html#u2">map</a>.</div>
+</main>
+<footer>Original explanation of BlueDot Impact's Technical AI Safety course, unit 2 chapter 1. Course text © BlueDot Impact; this page links, it does not copy.</footer>
+</body>
+</html>

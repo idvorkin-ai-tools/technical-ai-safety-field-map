@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Assuming harm — Technical AI Safety, mapped</title>
+<meta name="description" content="AI control: how to get safe work out of a model you do not trust, using monitors, audit budgets and filters rather than alignment." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../paper.css" />
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><span class="dot"></span>TECHNICAL&nbsp;AI&nbsp;SAFETY&nbsp;//&nbsp;FIELD&nbsp;MAP</div>
+  <a class="back" href="../index.html#u5">← field map</a>
+</div></header>
+<main>
+  <div class="eyebrow"><span class="box bb mono">UNIT 5 · MINIMISING HARM</span><span class="mono">chapter 1 · 50 min</span></div>
+  <h1>Assuming harm</h1>
+  <div class="authors">BlueDot Impact · Technical AI Safety · unit 5, chapter 1</div>
+  <div class="paperlink" style="border-left-color:var(--def)"><span class="lbl">Course page</span><a href="https://bluedot.org/courses/technical-ai-safety/5/1" target="_blank" rel="noopener">Assuming harm — BlueDot ↗</a></div>
+
+  <div class="tldr"><b>TL;DR —</b> Units 2–4 tried to make the model trustworthy: train it to be safe, evaluate whether it is dangerous, read its internals. Every one of those techniques has a failure mode, and a model that is actively working against you is exactly the case where they fail together. This chapter flips the assumption: suppose the model <em>is</em> misaligned, or suppose a user has jailbroken it, and ask what you can still guarantee. The answer is a deployment protocol — untrusted model, trusted monitor, a small human audit budget, filters at the boundary — whose safety comes from the arrangement rather than from the model's disposition. The one thing to remember: control buys you safety you can argue for without knowing the model's intentions, and it buys it only up to a capability gap that eventually closes.</div>
+
+  <p class="lead">This is the last technical unit before the course turns to careers, and it exists because the previous three each end in a shrug. Safety training gets you good behaviour on the distribution you trained on. Dangerous-capability evals get you a number a model smart enough to notice the eval can move. Interpretability gets you partial, contested readings of internals that were never designed to be read. None of it is a clean bill of health you can bet a deployment on. So unit 5 stops asking "is this model safe?" and starts asking "what do I build around a model whose safety I cannot establish?" That question has a name — <b>AI control</b> — and unlike most of AI safety it comes with a concrete, quantitative, adversarial methodology.</p>
+
+  <h2>The assumption that changes the engineering</h2>
+
+  <p>Alignment and control are answers to the same threat but they make opposite bets. Alignment tries to make the model not want to hurt you. Control assumes that bet failed and tries to make the model unable to hurt you anyway. The distinction matters because it changes what a safety argument looks like. An alignment safety case is a claim about a model's dispositions, and dispositions are the hardest thing in the world to verify from the outside. A control safety case is a claim about a protocol: <em>even if this model is scheming, the arrangement of monitors, permissions and audits around it means it cannot get a catastrophic action executed without being caught first.</em> That claim is about an artifact you built and can test, not about a mind you cannot see into.</p>
+
+  <p>That framing hands you a design vocabulary. You do not have one AI; you have a <b>trusted</b> model and an <b>untrusted</b> one. Trusted means weaker and older — capable enough to be useful, not capable enough to run a coherent long-horizon plan against you. Untrusted means the frontier model whose capability is the reason you are deploying anything. Safety then comes from spending the trusted model's cheap, plentiful attention plus a sliver of expensive human attention to constrain what the untrusted one gets through. Every control technique is an arrangement of those three resources.</p>
+
+  <h2>The toolkit</h2>
+
+  <p>The BlueDot overview of <a class="lnk" href="https://blog.bluedot.org/p/ai-control" target="_blank" rel="noopener">AI control</a> lays out the main moves, and each is worth understanding as a distinct trade rather than a menu item.</p>
+
+  <p><b>Trusted monitoring.</b> The weak model reads the strong model's outputs and scores how suspicious they look. You cannot afford to have a human read everything, so the monitor's real job is triage: turn a firehose of actions into a ranked list, and spend your human audit budget on the top slice. The interesting parameter is not the monitor's accuracy in the abstract but its accuracy <em>at the threshold your budget can afford</em>. If you can audit 1% of actions, what matters is the recall in the top 1% of suspicion scores.</p>
+
+  <p><b>Trusted editing.</b> Instead of just flagging, the weak model rewrites the suspicious parts. This costs capability — the weak model's edit is worse code — but it converts a detection problem into a neutralisation problem, applicable to the band that is suspicious enough to worry about but not worth burning an audit on.</p>
+
+  <p><b>Untrusted (mutual) monitoring.</b> Use a second copy of the strong model as the monitor, since it judges subtle sabotage far better than the weak model does. The hole is collusion: two instances sharing weights can settle on "don't report each other" without exchanging a message, each simply reasoning about what the other would do. The defence is honeypots — feed the monitor synthetic backdoors it cannot distinguish from real ones, so silence itself becomes evidence.</p>
+
+  <p><b>Escalating permissions.</b> Gate the consequential actions — the deploy, the outbound network call, the credential read — behind human approval and let the rest run. Ordinary least-privilege engineering; its value here is that it shrinks the irreversible-damage surface to something small enough to review.</p>
+
+  <p><b>Task decomposition.</b> Split work into pieces small enough that no single untrusted instance sees the whole plan, and have a trusted model reassemble the results. This attacks an attack's coordination requirement rather than the attack itself: most dangerous plans need the model to hold a multi-step scheme across a session, and decomposition denies it that.</p>
+
+  <div class="callout">The unifying idea is an <b>audit budget</b>. You have some tiny fraction of actions you can afford to look at properly, and every control technique is a way of aiming that fraction. A protocol is good not because it detects attacks but because it detects them <em>within budget</em>, at an acceptable cost in usefulness.</div>
+
+  <h2>Control evaluations: the red-team/blue-team game</h2>
+
+  <p>Control is unusually tractable because you can measure it. A control evaluation is a two-sided game: the blue team writes the protocol, the red team writes an attack policy for the untrusted model — adversarially, with full knowledge of the protocol. Run both and read off two numbers: <b>safety</b> (how often the attack got through uncaught) and <b>usefulness</b> (how much capability survived). Every protocol is a point on a Pareto curve between the two, so you argue by comparing curves rather than trading intuitions.</p>
+
+  <p>This is the rare AI-safety methodology that produces falsifiable numbers about a deceptive model without requiring you to have one: you substitute a red team deliberately playing the misaligned role. That substitution is both the method's strength and its central assumption — the evaluation is only as strong as the red team's ability to think of the attack the real model would think of. Miles's video walks the original Redwood setup (strong model writing backdoored code, weak monitor, 2% audit budget) and is the fastest way to get the game's shape into your head.</p>
+
+  <blockquote class="q"><span>"we just really know a list of 40 things where, if you did them … you'd probably be able to not have very much of your problem"</span><span class="cite">— <a href="https://80000hours.org/podcast/episodes/buck-shlegeris-ai-control-scheming/" target="_blank" rel="noopener">Buck Shlegeris on controlling AI that wants to take over</a>, 80,000 Hours (2025)</span></blockquote>
+
+  <p>That is the pitch for control as a field: it is unusually cheap relative to how much risk it removes, which means labs might actually do it. It is also, deliberately, an unambitious pitch. Nobody claims a control protocol makes a superintelligence safe.</p>
+
+  <h2>Filtering at the boundary</h2>
+
+  <p>The chapter's other half is the misuse case rather than the scheming case: the model is not the adversary, the user is. Safety training already refuses obvious requests, but jailbreaks — role-play framings, obfuscated encodings, language switching, long multi-turn setups — reliably get past it. Input/output filtering adds an independent layer: classifiers outside the model inspecting what goes in and what comes out, so a prompt that defeats the model's own refusal behaviour still has to defeat a system that was never in the conversation.</p>
+
+  <p>Anthropic's <a class="lnk" href="https://www.anthropic.com/news/constitutional-classifiers" target="_blank" rel="noopener">Constitutional Classifiers</a> is the flagship result. The classifiers train on synthetic data generated from a written constitution of what is and is not allowed, which makes the policy explicit and editable rather than baked into weights. Carry the February 2025 numbers: jailbreak success fell from roughly 86% unguarded to about 4.4%; refusals on harmless traffic rose 0.38%, not statistically significant; inference overhead 23.7%. Three thousand hours of paid red-teaming found no universal jailbreak against the guarded system.</p>
+
+  <p>That 23.7% is a real deployment tax, and the follow-up on <a class="lnk" href="https://alignment.anthropic.com/2025/cheap-monitors/" target="_blank" rel="noopener">cheap monitors</a> attacks it by re-using the policy model's own activations instead of a separate classifier pass — linear probes on hidden states reach comparable performance at near-zero marginal compute, last-layer fine-tuning at about 4%. If that survives adaptive attack, filtering stops being rationed and becomes always-on.</p>
+
+  <h2>Where it breaks</h2>
+
+  <p>Control is honest about its limits, which is a large part of why it is worth learning.</p>
+
+  <p><b>It has an expiry date.</b> The scheme rests on a capability gap: the trusted model must be weak enough to trust and strong enough to catch the untrusted one. That gap narrows as frontier models improve. Control is a strategy for the window in which AIs are dangerous but not vastly superhuman, and its advocates say so explicitly. It buys time; it is not a terminal answer.</p>
+
+  <p><b>Collusion and steganography.</b> Shared weights plus a shared read of the situation is a coordination channel that needs no bandwidth, and models can encode signals in output that reads as innocuous. Honeypots help, but this is an arms race, not a proof.</p>
+
+  <p><b>Filters inherit their training data's failures.</b> A classifier is a model, and it imports every skew its training data had.</p>
+
+  <blockquote class="q"><span>"the Perspective API is significantly more likely to classify text as toxic if it is written in German"</span><span class="cite">— <a href="https://blog.bluedot.org/p/input-output-filtering" target="_blank" rel="noopener">What is input/output filtering in AI safety?</a>, Sarah Hastings-Woodhouse (2025)</span></blockquote>
+
+  <p>A filter that is systematically wrong about a language or a dialect is not a neutral safety layer. It degrades service for some users and quietly hands others a bypass, and both failures are invisible in an aggregate jailbreak-rate number.</p>
+
+  <p><b>Somebody has to write the constitution.</b> Explicit policy beats implicit policy precisely because it is contestable — which puts who writes it, and by what legitimacy, on the table rather than buried in preference data.</p>
+
+  <p><b>Chronic harm hides under the threshold.</b> Control evaluations are framed around discrete catastrophic actions — the backdoor, the exfiltration. Slow, distributed, individually-innocuous degradation of research quality or institutional decision-making trips no monitor tuned for acute events, and it is not clear what an audit budget even means for it.</p>
+
+  <p><b>Adaptive attackers.</b> Every number here is measured against a fixed red team; real attackers iterate against the deployed system for as long as it exists. "No universal jailbreak in 3,000 hours" is strong evidence, not a guarantee.</p>
+
+  <h2>Readings, linked</h2>
+  <p>The course budgets 50 minutes and it is nearly all the Miles video. Watch that first — it gives you the game-theoretic picture that the two BlueDot explainers then fill in — then read the two explainers, then skim the Anthropic post for the numbers. The 80,000 Hours episode is optional and long, but it is the best single source on what practitioners actually think control can and cannot do.</p>
+  <ul class="readings">
+    <li><a href="https://www.youtube.com/watch?v=0pgEMWy70Qk" target="_blank" rel="noopener">Using Dangerous AI, But Safely?</a> — Robert Miles (2024) · 30 min · Video walkthrough of Redwood Research's original control setup: untrusted model writing backdoored code, trusted weak monitor, small audit budget, safety-vs-usefulness curve. The clearest introduction to why the red-team/blue-team framing is the right one.</li>
+    <li><a href="https://blog.bluedot.org/p/ai-control" target="_blank" rel="noopener">Introduction to AI Control</a> — Sarah Hastings-Woodhouse (2025) · 5 min · Compact tour of the technique menu — trusted monitoring, mutual monitoring and its collusion problem, permission escalation, task decomposition. Assigned as the vocabulary you need before reading anything else in the unit.</li>
+    <li><a href="https://blog.bluedot.org/p/input-output-filtering" target="_blank" rel="noopener">What is input/output filtering in AI safety?</a> — Sarah Hastings-Woodhouse (2025) · 5 min · Switches the threat model from scheming AI to misusing human, explains why a deployment-time classifier is an independent layer from safety training, and is candid about the three limits: jailbreaks persist, classifiers inherit bias, and someone must decide the policy.</li>
+    <li><a href="https://www.anthropic.com/news/constitutional-classifiers" target="_blank" rel="noopener">Constitutional Classifiers: Defending against universal jailbreaks</a> — Sharma et al. (2025) · 10 min · The concrete instantiation: classifiers trained on synthetic data from an explicit written constitution. Source of the 86% → 4.4% jailbreak figure, the 0.38% over-refusal and the 23.7% inference overhead. Assigned because it is the rare defence with real red-team hours behind the claim.</li>
+    <li><a href="https://80000hours.org/podcast/episodes/buck-shlegeris-ai-control-scheming/" target="_blank" rel="noopener">Buck Shlegeris on controlling AI that wants to take over — so we can use it anyway</a> — Rob Wiblin &amp; Buck Shlegeris, 80,000 Hours (2025) · ~2h10m · <em>Optional.</em> Redwood's CEO on why control is cheap enough that labs might actually adopt it, resampling as a detection method, why insider threat beats escape as a threat model, and the chronic-vs-acute harm distinction.</li>
+  </ul>
+
+  <h2 id="exercises">Exercises</h2>
+  <p>The course page for this chapter sets no exercises — it is a readings-only session, with the graded work arriving in later chapters of the unit. The three below are field map extras, written so you can do them without a course login.</p>
+  <ol class="exercises">
+    <li><b>Run a control evaluation on your laptop</b> <span class="code">code</span> <em>— field map extra.</em> Reproduce the shape of the Redwood experiment at toy scale. Take a set of small programming problems with unit tests (HumanEval or the APPS interview split both work). Play the red team: prompt a strong model to solve each problem while inserting a backdoor — code that passes the visible tests but fails on one specific input the model also reports to you. Play the blue team: prompt a much weaker model to score each solution 0–100 for suspiciousness, with no knowledge of which are backdoored. Then fix an audit budget of 2% and measure both axes: <em>safety</em> = fraction of backdoors that land in the audited top 2% of suspicion, <em>usefulness</em> = fraction of clean solutions that still pass their tests under your protocol. <em>What a good answer has:</em> a safety/usefulness pair for at least three protocols (no monitoring, trusted monitoring with auditing, trusted editing above some threshold), plotted as points on one chart, plus a paragraph on what the red team would try next given the blue team's protocol — the second iteration is where the real learning is. <em>Start here:</em> (1) pick a trusted/untrusted pair with a real capability gap, e.g. Llama&nbsp;3.2&nbsp;3B as trusted and a frontier API model as untrusted; (2) use <code>inspect_ai</code> or plain <code>anthropic</code>/<code>openai</code> SDK calls in a loop, and sandbox test execution in Docker — you are deliberately generating malicious code; (3) generate ~100 clean and ~100 backdoored solutions; (4) score all 200 with the monitor and store scores as JSON; (5) sweep the audit threshold and plot; (6) write the red team's counter-strategy.</li>
+    <li><b>Build and price an output filter</b> <span class="code">code</span> <em>— field map extra.</em> Constitutional Classifiers cost 23.7% inference overhead; the cheap-monitors follow-up claims a linear probe on the policy model's own activations gets comparable performance for almost nothing. Test the cheap end yourself. Train a linear probe on the residual-stream activations of a small open model to classify prompts as harmful or benign, then compare it against a separate small classifier model on three axes: detection rate, false-positive rate on benign traffic, and added latency. <em>What a good answer has:</em> a ROC curve for both methods on a held-out set, a measured millisecond cost for each, an explicit statement of the operating point you would ship and why, and an honest note on how you would expect an adaptive attacker to break the probe specifically. <em>Start here:</em> (1) Llama&nbsp;3.2&nbsp;1B or Qwen2.5&nbsp;1.5B on a free Colab T4; (2) capture hidden states with <code>transformer_lens</code> or plain HuggingFace <code>output_hidden_states=True</code>; (3) build a labelled set from a public harmful/benign prompt corpus plus paraphrases you generate; (4) fit <code>sklearn</code> logistic regression per layer and pick the best layer on validation; (5) baseline against a fine-tuned DistilBERT classifier; (6) time both with <code>time.perf_counter</code> over 200 calls.</li>
+    <li><b>Write the control safety case</b> <em>— field map extra.</em> Pick a real deployment you know: an internal coding agent with repo write access, a customer support bot with refund authority, a research agent that can run jobs on a cluster. Write a two-page safety case in the control style — not "the model is aligned" but "even if this model is actively trying to cause harm, here is why it cannot succeed without being caught." Enumerate the catastrophic actions available to it, the monitor and permission gate standing in front of each, your audit budget as an actual number of human-minutes per day, and the assumption each argument rests on. <em>What a good answer has:</em> at least one place where you conclude the argument does <em>not</em> hold and say what would have to change; a named capability gap between trusted and untrusted components; and an explicit statement of which threats the case deliberately does not cover — chronic degradation, insider collusion, attacks on the monitoring pipeline itself.</li>
+  </ol>
+
+  <h2>Go deeper</h2>
+  <ul>
+    <li><a class="lnk" href="https://arxiv.org/abs/2312.06942" target="_blank" rel="noopener">AI Control: Improving Safety Despite Intentional Subversion</a> — Greenblatt, Shlegeris, Sachan &amp; Roger (2023/2024). The founding paper. This is the experiment the Miles video narrates, with the actual protocol definitions and Pareto curves; read it if you want to design a control evaluation rather than just describe one.</li>
+    <li><a class="lnk" href="https://www.lesswrong.com/posts/kcKrE9mzEHrdqtDpE/the-case-for-ensuring-that-powerful-ais-are-controlled" target="_blank" rel="noopener">The case for ensuring that powerful AIs are controlled</a> — Greenblatt &amp; Shlegeris, LessWrong (2024). The strategic argument rather than the technical one: why control is worth doing even though it obviously does not scale to superintelligence, and what the capability window looks like.</li>
+    <li><a class="lnk" href="https://arxiv.org/abs/2501.18837" target="_blank" rel="noopener">Constitutional Classifiers: Defending against Universal Jailbreaks across Thousands of Hours of Red Teaming</a> — Sharma et al. (2025). The full paper behind the Anthropic post: how the constitution generates the synthetic training data, the red-teaming protocol, and the automated held-out jailbreak evaluations.</li>
+    <li><a class="lnk" href="https://arxiv.org/abs/2504.10374" target="_blank" rel="noopener">Ctrl-Z: Controlling AI Agents via Resampling</a> — Bhatt et al. (2025). The first control evaluation in a real agentic setting, on a 257-task sysadmin benchmark. Resampling suspicious actions cut attack success from 58% to 7% for a 5% usefulness cost — the technique Shlegeris talks about in the podcast, written up.</li>
+    <li><a class="lnk" href="https://alignment.anthropic.com/2025/cheap-monitors/" target="_blank" rel="noopener">Cost-Effective Constitutional Classifiers via Representation Re-use</a> — Cunningham et al., Anthropic Alignment Science (2025). The overhead fix: probes on existing activations instead of a separate classifier pass. Read it for the argument that monitoring cost is an engineering problem, not a permanent tax.</li>
+  </ul>
+
+  <div class="callout">Next: <a class="lnk" href="../unit5/ch2.html">Building defences</a> · Back to the <a class="lnk" href="../index.html#u5">map</a>.</div>
+</main>
+<footer>Original explanation of BlueDot Impact's Technical AI Safety course, unit 5 chapter 1. Course text © BlueDot Impact; this page links, it does not copy.</footer>
+</body>
+</html>
