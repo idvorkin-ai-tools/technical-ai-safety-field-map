@@ -20,3 +20,10 @@ test('features kept never falls as features get sparser (the widget stops)', () 
 test('same seed, same run', () => {
   assert.deepEqual(L.train(0.1).W, L.train(0.1).W);
 });
+test('the precomputed tables the widget draws are what train() produces', () => {
+  for (const d of Object.keys(L.PRE)) {
+    const W = L.train(+d).W;
+    W.forEach((row, a) => row.forEach((v, i) => assert.ok(Math.abs(v - L.PRE[d][a][i]) < 1.5e-3, d + ' W[' + a + '][' + i + ']')));
+    assert.equal(L.run(+d).kept, L.train(+d).kept);
+  }
+});

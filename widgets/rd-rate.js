@@ -34,7 +34,7 @@
         var y = 14 + i * 30;
         s += H.t(86, y + 13, r[0], 't-mid', 'text-anchor="end"');
         s += '<rect x="' + X(1) + '" y="' + y + '" width="' + Math.max(1, X(r[1]) - X(1)) + '" height="18" rx="2" class="' + r[2] + '"/>';
-        s += H.t(Math.min(X(r[1]) + 4, 326), y + 13, x(r[1]) + TIMES, 't-ink');
+        s += X(r[1]) > 290 ? H.t(X(r[1]) - 4, y + 13, x(r[1]) + TIMES, 't-inv', 'text-anchor="end"') : H.t(X(r[1]) + 4, y + 13, x(r[1]) + TIMES, 't-ink');
       });
       s += H.t(217, 129, 'effective scale-up per year, log scale', 't-dim', 'text-anchor="middle"');
       svg.innerHTML = s;

@@ -2,7 +2,7 @@
 // Maths in lab/superposition.js (tested in tools/tests/superposition.test.js).
 (function () {
   var H = window.AIToolsWidgets, L = window.TASLab;
-  if (!H || !L || !L.train) return;
+  if (!H || !L || !L.run) return;
   var $ = H.$, STOPS = [1, 0.5, 0.3, 0.1, 0.05, 0.03];
   H.register('superposition', function (el) {
     var p = 'sp' + H.uid(), cache = {};
@@ -12,7 +12,7 @@
       '<div class="statgrid">' + H.stat('features kept', p + '-k') + H.stat('features per dimension', p + '-r') + '</div>' + H.sum(p + '-sum');
     var d = $(el, p + '-d'), svg = el.querySelector('svg');
     function draw() {
-      var dens = STOPS[+d.value], r = cache[dens] || (cache[dens] = L.train(dens));
+      var dens = STOPS[+d.value], r = cache[dens] || (cache[dens] = L.run(dens));
       var label = dens === 1 ? 'every input' : Math.round(dens * 100) + '% of inputs';
       $(el, p + '-d-o').textContent = Math.round(dens * 100) + '%';
       d.setAttribute('aria-valuetext', 'each feature present on ' + label);

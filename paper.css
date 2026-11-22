@@ -93,6 +93,7 @@ main a:not([class]):hover{text-decoration-color:var(--def)}
 .lab svg .t-dim{fill:var(--ink-dim)}
 .lab svg .t-mid{fill:var(--ink-mid)}
 .lab svg .t-ink{fill:var(--ink)}
+.lab svg .t-inv{fill:var(--bg);font-weight:600}
 .lab svg .ln-grid{stroke:var(--line);stroke-width:1}
 .lab svg .ln-def{stroke:var(--def)}
 .lab svg .ln-dim{stroke:var(--ink-dim);stroke-dasharray:3 3}
@@ -100,6 +101,13 @@ main a:not([class]):hover{text-decoration-color:var(--def)}
 .lab svg .bar-off{fill:var(--off)}
 .lab svg .bar-dim{fill:var(--ink-dim);opacity:.45}
 .lab li::before,.lab-try::before{content:none}
+
+/* the Definitions section has its own h2, so hide the list's built-in label */
+#definitions .gl-list-h{display:none}
+
+/* anchors land below the sticky top bar (taller when it wraps on narrow screens) */
+main [id]{scroll-margin-top:72px}
+@media (max-width:600px){main [id]{scroll-margin-top:112px}}
 
 /* long inline code (URLs, regexes) wraps instead of pushing the page sideways */
 main code{overflow-wrap:anywhere}

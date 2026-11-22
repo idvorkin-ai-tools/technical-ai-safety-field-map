@@ -53,7 +53,23 @@
     for (i = 0; i < N; i++) { norms.push(Math.hypot(W[0][i], W[1][i])); if (norms[i] > 0.5) kept++; }
     return { W: W, b: b, importance: I, norms: norms, kept: kept, loss: loss / batch };
   }
-  var api = { train: train, N: N, M: M };
+  // train(density) for the widget's six stops, rounded to 3 decimals, so the page draws without
+  // training on load; tools/tests/superposition.test.js checks train() still reproduces them.
+  var PRE = {
+    '1': [[-0.621,0.781,0.031,-0.041,-0.015],[-0.78,-0.618,0.026,0.009,0.004]],
+    '0.5': [[-0.869,0.863,0.474,0.028,-0.433],[-0.483,0.426,-0.878,0.013,0.818]],
+    '0.3': [[-0.85,0.848,-0.009,0.561,-0.544],[-0.564,0.549,-0.013,-0.848,0.835]],
+    '0.1': [[-1.088,0.757,0.986,-0.13,-0.509],[-0.219,0.828,-0.474,-1.08,0.97]],
+    '0.05': [[-1.142,0.774,1.002,-0.19,-0.471],[-0.155,0.82,-0.506,-1.106,0.99]],
+    '0.03': [[-1.137,0.834,0.989,-0.22,-0.461],[-0.132,0.762,-0.562,-1.137,1.022]]
+  };
+  function fromTable(W) {
+    var norms = [], kept = 0, importance = [];
+    for (var i = 0; i < N; i++) { importance.push(Math.pow(0.9, i)); norms.push(Math.hypot(W[0][i], W[1][i])); if (norms[i] > 0.5) kept++; }
+    return { W: W, importance: importance, norms: norms, kept: kept };
+  }
+  function run(density) { return PRE[String(density)] ? fromTable(PRE[String(density)]) : train(density); }
+  var api = { train: train, run: run, PRE: PRE, N: N, M: M };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.TASLab = Object.assign(root.TASLab || {}, api);
 })(this);
