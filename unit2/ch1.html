@@ -25,11 +25,11 @@
 
   <p class="lead">This is the unit's one-screen framing chapter — no readings, no exercises. It earns its place by naming the taxonomy the next three chapters hang off, so it is worth being precise about what that taxonomy is cutting.</p>
 
-  <h2>Safety here is a training problem, not a programming problem</h2>
+  <h2 id="safety-here-training">Safety here is a training problem, not a programming problem</h2>
   <p>The intuition most engineers arrive with is wrong in a specific, load-bearing way. In ordinary software the gap between spec and implementation is a bug you can localise: some line does the wrong thing, you find it, you change it. Neural network behaviour has no such line. The weights are the output of a search, and the only handles on that search are the corpus, the loss, and the optimiser's budget. Nobody wrote "refuse to help synthesise a nerve agent" anywhere; a refusal is a behaviour that fell out of gradient descent on a lot of examples, and it can fall back out again under a prompt nobody anticipated.</p>
   <p>The practical consequence: <em>every</em> safety property you get from training is statistical. You are not adding a guarantee, you are shifting a distribution. Hence "training <em>safer</em> models", and hence chapters 2–4 spending as much time on failure modes as on techniques.</p>
 
-  <h2>Three levers, in the order the training run touches them</h2>
+  <h2 id="three-levers-order">Three levers, in the order the training run touches them</h2>
   <p><b>Input data filtering.</b> The earliest and bluntest intervention: decide what the model is allowed to learn from in the first place. If a capability is never in the corpus, there is nothing for fine-tuning to elicit later. The strongest recent result here is <a href="https://arxiv.org/abs/2508.06601" target="_blank" rel="noopener">Deep Ignorance</a>, which filtered dual-use biology content out of pretraining and found the resulting open-weight models substantially resisted adversarial fine-tuning — the safety property survived people trying to train it away, which is exactly what post-hoc refusal training does not do. The catch is also instructive:</p>
   <blockquote class="q off"><span>"…can still leverage such information when it is provided in context."</span><span class="cite">— <a href="https://arxiv.org/abs/2508.06601" target="_blank" rel="noopener">Deep Ignorance: Filtering Pretraining Data Builds Tamper-Resistant Safeguards into Open-Weight LLMs</a>, O'Brien et al. (2025)</span></blockquote>
   <p>Filtering removes knowledge, not the capacity to use it. Paste the paper into the prompt and the ignorance evaporates — a real defence with a precisely known hole.</p>
@@ -38,7 +38,7 @@
 
   <div class="callout">The load-bearing idea to carry into the rest of the unit: each lever optimises a <em>measurable stand-in</em> for safety — corpus membership, rater approval, a critique model's verdict. None of them is safety. Every failure mode in chapters 2–4 is some version of the model finding the part of the stand-in's domain where it comes apart from the thing it stood in for.</div>
 
-  <h2>What this framing leaves out</h2>
+  <h2 id="framing-leaves-out">What this framing leaves out</h2>
   <p>All three levers act during training. They exclude inference-time defences — classifiers and monitors sitting in front of and behind the model — and they say nothing about whether you can <em>tell</em> a model is unsafe, which is unit 3's evaluations and unit 4's interpretability. Read this unit as "how far does shaping the training run get you", with the honest answer arriving at the end of chapter 4.</p>
 
   <h2 id="readings">Readings, linked</h2>
@@ -57,7 +57,7 @@
     <li><b>Write the constitution you would actually ship</b> <em>(field map extra)</em> — Pick a narrow deployed assistant you know well (a coding agent, a customer-support bot, a medical-triage front end) and draft 8–12 numbered principles a model could apply to critique and revise its own drafts, in the style of <a href="https://arxiv.org/abs/2212.08073" target="_blank" rel="noopener">Constitutional AI</a>. Then adversarially review your own list: for each principle, write the request that satisfies its letter and violates its intent. <em>What a good answer has:</em> principles that are checkable by reading a single response (not "be helpful"), at least two that visibly conflict with each other plus a stated tie-break rule, and an honest note on which principles your own attacks broke — the conflicts and the breakages are the actual output of this exercise, not the list.</li>
   </ol>
 
-  <h2>Go deeper</h2>
+  <h2 id="deeper">Go deeper</h2>
   <ul>
     <li><a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">Training language models to follow instructions with human feedback</a> — Ouyang et al., OpenAI (2022). The InstructGPT paper; the canonical description of lever two and the reason every deployed chat model is post-trained this way.</li>
     <li><a href="https://arxiv.org/abs/2212.08073" target="_blank" rel="noopener">Constitutional AI: Harmlessness from AI Feedback</a> — Bai et al., Anthropic (2022). Replaces the human labeller with a written rule set and a critique loop — the most deployed instance of lever three.</li>

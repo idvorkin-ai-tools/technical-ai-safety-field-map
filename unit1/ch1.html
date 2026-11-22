@@ -25,20 +25,20 @@
 
   <p class="lead">Strategy documents about advanced AI share a soft spot. They describe a target state — "stays under human control", "refuses to help with a bioweapon", "we can tell whether it is scheming" — and move on, as if that were a configuration setting rather than an open research problem. This chapter announces the course is going to look under that assumption. It teaches nothing technical yet; it sets the terms of a four-unit argument about what today's techniques can and cannot deliver.</p>
 
-  <h2>Two questions that sound like one</h2>
+  <h2 id="two-questions-sound">Two questions that sound like one</h2>
   <p>"How do we make AI go well?" is what the <a class="lnk" href="https://bluedot.org/courses/agi-strategy" target="_blank" rel="noopener">AGI strategy course</a> answers, in the currency of actors and incentives: who holds the compute, which threat pathways are live, which plan you are betting on. That yields claims like "build defences and diffuse AI" or "hand control to an aligned superintelligence." Both are coherent. Neither tells you how to build a defence or verify an alignment.</p>
   <p>The technical question is narrower and far less forgiving: given a transformer trained on internet-scale data by gradient descent and then shaped by feedback, which safety properties can you actually cause to hold, how confidently, and how does that confidence decay as capability rises? That is what separates a plan from a proposal — and where most of the bad news lives, which is why units 2–5 are about techniques and their gaps rather than ambitions.</p>
 
-  <h2>Failures at the technical layer are silent at the strategy layer</h2>
+  <h2 id="failures-technical-layer">Failures at the technical layer are silent at the strategy layer</h2>
   <p>A regime requiring labs to test for dangerous capabilities is only as strong as the evals: if an eval measures "can the model do X when asked plainly" and the threat is "will it do X when it has reason to hide", the regime reports green while risk is unchanged. A plan resting on human oversight is only as strong as the oversight — which gets harder exactly as the overseen system outgrows the overseer. Strategy inherits every weakness of the mechanisms it delegates to, and cannot detect them in its own vocabulary.</p>
   <blockquote class="q off"><span>"Machine learning (ML) systems are rapidly increasing in size, are acquiring new capabilities, and are increasingly deployed in high-stakes settings."</span><span class="cite">— <a href="https://arxiv.org/abs/2109.13916" target="_blank" rel="noopener">Unsolved Problems in ML Safety</a>, Hendrycks, Carlini, Schulman &amp; Steinhardt (2021)</span></blockquote>
   <p>Five years old and now an understatement — the same argument in a line: capability, novelty and stakes rise together, each eroding a different assumption safety rests on.</p>
 
-  <h2>The spine: defence in depth</h2>
+  <h2 id="spine-defence-depth">The spine: defence in depth</h2>
   <p>The structure carried over from strategy is layered — stop the behaviour being learned, constrain the capability if it is learned, survive the action if it is taken anyway. The course walks those layers asking what tooling exists at each: training-time intervention (unit 2), evaluation (unit 3), reading the internals (unit 4), containment (unit 5, which assumes the earlier layers leaked).</p>
   <p>Read that as a chain, not a menu. No layer is sufficient alone; the real question is whether the failure modes are <em>independent</em>. If a capable model defeats your training, your evals and your monitor for the same underlying reason — all three graded by systems weaker than it is — stacking them buys much less than the diagram suggests. Unit 5's kill-chain exercise makes you confront that on your own example.</p>
 
-  <h2>The four exclusions</h2>
+  <h2 id="four-exclusions">The four exclusions</h2>
   <p>The chapter is explicit about what it will not cover. Each cut is defensible; three leak:</p>
   <ul>
     <li><b>Policy detail</b> — deferred to a separate course, on the theory that the substrate comes first. But a threshold in a frontier safety framework is a technical claim in legal clothes.</li>
@@ -68,7 +68,7 @@
     <li><b>Sanity-check the prerequisite (field map extra)</b> <span class="code">code</span> — Before unit 2, confirm the ML baseline the course assumes rather than discovering the gap in unit 4. Load a small open model and reproduce four things end to end: tokenisation, a forward pass, next-token logits, and a single gradient step. <em>What a good answer has:</em> a notebook where you can point at the tensor that is a logit distribution and say what its shape means, plus one sentence distinguishing pretraining from post-training in terms of what the loss is computed against. <em>Start here:</em> (1) free Colab or any laptop with 8&nbsp;GB RAM; <span class="mono">pip install transformers torch</span>. (2) Use a genuinely small model — <span class="mono">gpt2</span> or <span class="mono">Qwen/Qwen2.5-0.5B-Instruct</span>; nothing here needs a frontier model. (3) Tokenise a sentence, print the token ids and the decoded pieces, and find a word that splits into three tokens. (4) Run the model, take <span class="mono">outputs.logits[0, -1]</span>, softmax it, and print the top-10 next tokens with probabilities. (5) Compute the loss against the true next token and call <span class="mono">loss.backward()</span>; print the norm of the gradient on one weight matrix. (6) Write the one-sentence pretraining-vs-post-training answer at the top of the notebook. If any step needed a tutorial, do the <a class="lnk" href="https://bluedot-impact.notion.site/AI-Foundations-293f8e69035380f29863c4c92c41fac7?pvs=74" target="_blank" rel="noopener">AI Foundations</a> modules before unit 2.</li>
   </ol>
 
-  <h2>Go deeper</h2>
+  <h2 id="deeper">Go deeper</h2>
   <ul>
     <li><a class="lnk" href="https://arxiv.org/abs/2504.01849" target="_blank" rel="noopener">An Approach to Technical AGI Safety and Security</a> — Shah, Irpan, Turner, Wang, Conmy, Lindner et al., Google DeepMind (2025). The closest thing to this course's argument written as a single research agenda: misuse and misalignment split apart, then model-level and system-level mitigations stacked. Read the introduction now, the rest after unit 5.</li>
     <li><a class="lnk" href="https://arxiv.org/abs/2109.13916" target="_blank" rel="noopener">Unsolved Problems in ML Safety</a> — Hendrycks, Carlini, Schulman &amp; Steinhardt (2021). The four-bucket taxonomy — robustness, monitoring, alignment, systemic safety — that most later field maps, including this course's unit structure, are variations on.</li>

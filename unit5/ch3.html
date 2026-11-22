@@ -25,13 +25,13 @@
 
   <p class="lead">This chapter is the unit's assembly step, and it assigns no new readings. Units 2 through 5 handed you a toolbox — safer training data, RLHF and Constitutional AI, dangerous-capability evals, interpretability probes, monitoring, filtering, AI control — and chapter 2 handed you a threat scenario you wrote yourself. The question nobody answers by accident is: <em>against my specific threat, which tool goes where, and does the stack hold?</em> The kill chain is the data structure that makes that answerable instead of rhetorical.</p>
 
-  <h2>What a kill chain actually is</h2>
+  <h2 id="kill-chain-actually">What a kill chain actually is</h2>
 
   <p>The idea is borrowed from network defence. Lockheed Martin's <a class="lnk" href="https://www.lockheedmartin.com/en-us/capabilities/cyber/cyber-kill-chain.html" target="_blank" rel="noopener">Cyber Kill Chain</a> answered a specific institutional failure: security teams were writing incident reports about individual malware samples and learning nothing transferable. It reframed an intrusion as a <em>sequence</em> — reconnaissance, weaponisation, delivery, exploitation, installation, command-and-control, actions on objectives — making the sequence the unit of analysis rather than the payload. That lets you say something a per-incident report never does: the attacker had to complete all seven stages, and I only had to break one.</p>
 
   <p>That asymmetry inverts the usual attacker-advantage framing. Under "the attacker only has to be right once", defence is hopeless; under the kill chain, the attacker has to be right at every stage in order and the defender picks whichever stage is cheapest to instrument. Neither is wrong — they describe different games. The kill chain applies when the harm requires a <em>chain</em> of successes rather than one lucky shot, which is true of every catastrophic pathway the course names: a coup, an engineered pandemic, an infrastructure takedown. None of those is one prompt. MITRE later generalised the same move into <a class="lnk" href="https://attack.mitre.org/" target="_blank" rel="noopener">ATT&amp;CK</a> and, for machine-learning systems specifically, <a class="lnk" href="https://atlas.mitre.org/" target="_blank" rel="noopener">ATLAS</a>; borrow their stage names rather than inventing your own.</p>
 
-  <h2>Scenario versus chain: the difference that does the work</h2>
+  <h2 id="scenario-versus-chain">Scenario versus chain: the difference that does the work</h2>
 
   <p>At the end of chapter 2 you wrote a scenario in the form <span class="mono">The [ACTOR] with [CAPABILITY] and [MOTIVATION] attacks [ASSET] by [ATTACK PATHWAY] in order to [OBJECTIVE]</span>. That sentence is a claim about the world: falsifiable in principle, useless in practice, because it has no internal joints — nowhere to put a defence, and no way to argue about whether the defence would work.</p>
 
@@ -39,7 +39,7 @@
 
   <p>The discipline that makes staging honest is writing, per stage, three things: what the attacker does, what has to be <em>true</em> for it to succeed, and what a defender could <em>observe</em> if it were happening. The third column is the one people skip and the one that decides whether the chain is actionable. A stage nobody can observe is not a choke point; it is a hope.</p>
 
-  <h2>Finding the load-bearing link</h2>
+  <h2 id="finding-load-bearing-link">Finding the load-bearing link</h2>
 
   <p>The chapter's sharpest prompt is whether removing one capability collapses the entire threat. Read literally that is usually too strong — real chains have redundancy — but as a search heuristic it is excellent, because it forces you to distinguish two things that look alike on a diagram. A stage is <b>conjunctive</b> if the attacker needs it and has no substitute: an AND gate. It is <b>disjunctive</b> if there are three other ways to get the same effect: an OR gate. Defences on OR-gate stages buy almost nothing, because the attacker reroutes for the cost of an afternoon; defences on AND-gate stages buy the whole chain. So the question is not "which capability sounds scariest" but "which has no cheap substitute" — and the test is a counterfactual you run adversarially against yourself: <em>if I successfully deny this, what does a competent attacker do instead, and what does it cost them?</em> If the answer is "use an open-weights model with the safeguards stripped", your choke point is a speed bump, and it is much better to learn that on paper.</p>
 
@@ -47,7 +47,7 @@
 
   <blockquote class="q"><span>"Historically, jailbreaks have proved difficult to detect and block: these kinds of attacks were described over 10 years ago, yet to our knowledge there are still no fully robust deep-learning models in production."</span><span class="cite">— <a href="https://www.anthropic.com/news/constitutional-classifiers" target="_blank" rel="noopener">Constitutional Classifiers: Defending against universal jailbreaks</a>, Anthropic (2025)</span></blockquote>
 
-  <h2>Three lever positions: prevent, detect, constrain</h2>
+  <h2 id="three-lever-positions">Three lever positions: prevent, detect, constrain</h2>
 
   <p>Once you have the load-bearing capability, the chapter asks you to attack it from three directions — which are the course's earlier units re-sorted by <em>when</em> they act.</p>
 
@@ -63,7 +63,7 @@
 
   <div class="callout">The one thing to carry away: <b>write the counterfactual next to every defence you propose.</b> "Add a classifier at stage 3" is not a finding. "Add a classifier at stage 3; the attacker's cheapest reroute is an open-weights model, costing them a month and X capability" is a finding — and it is the sentence that tells you whether to build the classifier or go work on something else.</div>
 
-  <h2>Where the method breaks</h2>
+  <h2 id="where-method-breaks">Where the method breaks</h2>
 
   <p>Three failure modes are worth naming before you trust your own chain.</p>
 
@@ -105,7 +105,7 @@
       <em>Start here:</em> (1) build a 200-item labelled set — 100 benign requests that superficially resemble your attack stage (a virologist asking legitimate questions, an admin doing legitimate privileged operations) and 100 positives you write by hand or generate; the hard negatives are the whole experiment, since separating attacks from obviously-unrelated traffic is trivial and proves nothing. (2) Use a small instruct model as the trusted monitor — <span class="mono">Qwen2.5-1.5B-Instruct</span> or <span class="mono">Llama-3.2-1B-Instruct</span> via HuggingFace <span class="mono">transformers</span> runs on a free Colab T4 or a laptop CPU at this scale — prompted to return a 0–100 suspicion score; a cheap API model works too if you prefer. (3) Score all 200 items, then use <span class="mono">sklearn.metrics.roc_curve</span> to get TPR at FPR = 0.01 and 0.001 rather than picking a threshold by eye. (4) Multiply out to your deployment volume and write down the daily false-alarm count. (5) Optional but where the insight is: add a second tier — send only the top 1% by suspicion to a larger adjudicator model — and recompute both the catch rate and the compute cost, which is the same tiered-defence trade-off Anthropic reports in the <a class="lnk" href="https://alignment.anthropic.com/2025/cheap-monitors/" target="_blank" rel="noopener">cheap monitors</a> work. (6) Write the number into the <span class="mono">defence</span> column of your exercise-1 file.</li>
   </ol>
 
-  <h2>Go deeper</h2>
+  <h2 id="deeper">Go deeper</h2>
   <ul>
     <li><a href="https://attack.mitre.org/" target="_blank" rel="noopener">MITRE ATT&amp;CK</a> and <a href="https://atlas.mitre.org/" target="_blank" rel="noopener">MITRE ATLAS</a> — the shared vocabulary for adversary tactics and techniques, ATLAS being the machine-learning-specific matrix. Borrow their stage names so your chain is legible to security people who have never heard of alignment.</li>
     <li><a href="https://arxiv.org/abs/2312.06942" target="_blank" rel="noopener">AI Control: Improving Safety Despite Intentional Subversion</a> — Greenblatt, Shlegeris, Sachan &amp; Roger (2023). The paper behind unit 5.1's control overview; read it for the methodology, where every blue-team protocol is scored against a red team that knows the protocol. That is the evaluation standard your exercise-3 "constrain" answer should be aiming at.</li>
