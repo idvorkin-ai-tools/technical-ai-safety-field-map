@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -25,15 +27,15 @@
 
   <p class="lead">Every survey course has the same problem at the end: you know enough to have opinions and not enough to feel entitled to them, so the safe move is to keep reading. Unit 6 exists to break that loop, and chapter 2 is where the break happens — not by giving you a ranked list of what to work on, but by handing you four organisations' ranked lists, which visibly disagree, and making the disagreement your problem. Chapters 1 and 3 bracket it: chapter 1 asks what kind of contribution you are aiming at, chapter 3 makes you write the choice down as a one-pager. This is the part in the middle where the choice actually gets made.</p>
 
-  <h2>The real bottleneck is agency, not information</h2>
+  <h2 id="real-bottleneck-agency">The real bottleneck is agency, not information</h2>
 
-  <p>The chapter opens with a piece that has nothing to do with AI — Neel Nanda on becoming someone who does things — and the placement is deliberate. By now the limiting factor has stopped being knowledge; you can name six threat models and a dozen techniques. What stops people is a pair of beliefs: <em>I couldn't actually do that</em>, and <em>someone smarter is surely on it already</em>. The second is wrong far more often than it feels. Whole categories of work — reproducing a published result on an open-weights model, maintaining an eval nobody owns, writing the tooling that would make someone else's experiment cheap — sit unclaimed not because they are hard but because they are unglamorous and unassigned.</p>
+  <p>The chapter opens with a piece that has nothing to do with AI — Neel Nanda on becoming someone who does things — and the placement is deliberate. By now the limiting factor has stopped being knowledge; you can name six threat models and a dozen techniques. What stops people is a pair of beliefs: <em>I couldn't actually do that</em>, and <em>someone smarter is surely on it already</em>. The second is wrong far more often than it feels. Whole categories of work — reproducing a published result on an <span class="term" data-term="open-weights">open-weights</span> model, maintaining an eval nobody owns, writing the tooling that would make someone else's experiment cheap — sit unclaimed not because they are hard but because they are unglamorous and unassigned.</p>
 
   <blockquote class="q"><span>"Being the kind of person who does things, an agent, is a skill, and I think it is a trainable skill."</span><span class="cite">— <a href="https://www.neelnanda.io/blog/become-a-person-who-actually-does-things" target="_blank" rel="noopener">Become a person who Actually Does Things</a>, Neel Nanda (2021)</span></blockquote>
 
   <p>The practical form of that claim: the choice you are about to make is <b>reversible and cheap</b>. Not a PhD topic — just what you spend the next twenty to forty hours on, so you have something concrete to show and something concrete to be wrong about. Being wrong in public about a narrow technical question is one of the fastest ways into this field; being undecided in private is one of the slowest.</p>
 
-  <h2>Three archetypes, three different first moves</h2>
+  <h2 id="three-archetypes-three">Three archetypes, three different first moves</h2>
 
   <p>The most useful lens the chapter supplies comes from MATS' interviews with 31 people who actually hire for these roles. They found that "AI safety researcher" is not one job. <b>Iterators</b> are empiricists who get a tight experiment loop spinning and turn the crank fast. <b>Connectors</b> work at the conceptual layer, generating and stress-testing the frames that empirical work later tests. <b>Amplifiers</b> multiply other people's output — infrastructure, project management, communication, the unsexy scaffolding without which a five-person research team ships nothing.</p>
 
@@ -41,37 +43,42 @@
 
   <p>This matters for <i>choosing a focus</i> because the archetypes have wildly different ramp times, and the agendas you are about to read are not equally accessible to each. The report's blunt finding is that Connectors take years of immersion and argument to mature — so "I'll start by developing a novel theory of agent foundations" is a poor opening move eight weeks into a course, however attractive it looks. Iterators can produce something a lab cares about almost immediately, because the bottleneck at the empirical layer is throughput. Amplifiers are the most systematically undervalued by newcomers and the most consistently in demand by the people doing the hiring.</p>
 
-  <p>Two caveats the course does not press hard enough. These are hiring lenses, not personality types — most working researchers do all three in different proportions, and the archetype to optimise for is the one describing your <em>next six months</em>, not your soul. And the report is from 2024: AI control was a niche agenda when those interviews happened and is now a standard line item at multiple labs. Read the archetypes as durable, the specific talent gaps as a snapshot.</p>
+  <p>Two caveats the course does not press hard enough. These are hiring lenses, not personality types — most working researchers do all three in different proportions, and the archetype to optimise for is the one describing your <em>next six months</em>, not your soul. And the report is from 2024: <span class="term" data-term="ai-control">AI control</span> was a niche agenda when those interviews happened and is now a standard line item at multiple labs. Read the archetypes as durable, the specific talent gaps as a snapshot.</p>
 
-  <h2>Reading four agendas as a market, not a menu</h2>
+  <h2 id="reading-four-agendas">Reading four agendas as a market, not a menu</h2>
 
   <p>The optional resources are the chapter's real payload, and they are worth more read against each other than in sequence. Four organisations with different incentives published what they want worked on:</p>
 
   <ul>
     <li><b>A funder's list.</b> The technical AI safety RFP from <a class="lnk" href="https://coefficientgiving.org/tais-rfp-research-areas/" target="_blank" rel="noopener">Coefficient Giving</a> (the organisation the course still calls Open Philanthropy — it rebranded in late 2025) enumerates roughly twenty-one areas it will write cheques for, at scales from API credits to seed funding for new orgs. A funder's list is deliberately broad: it tells you what is <em>fundable</em>, which is a different question from what is important, but a much more actionable one.</li>
     <li><b>A government lab's theory.</b> The <a class="lnk" href="https://www.alignmentforum.org/posts/tbnw7LbNApvxNLAg8/uk-aisi-s-alignment-team-research-agenda" target="_blank" rel="noopener">UK AISI Alignment Team agenda</a> is the opposite shape: not a list of areas but a single argument. Decompose alignment proposals into safety-case sketches to expose the gaps; treat honesty as the necessary condition to attack first; pursue asymptotic guarantees with theory and empirics together; then aim at automating alignment research itself. The most theory-forward of the four, and the most explicit about what would count as sufficient evidence.</li>
-    <li><b>A frontier lab's inventory.</b> Anthropic's Alignment Science team's <a class="lnk" href="https://alignment.anthropic.com/2025/recommended-directions" target="_blank" rel="noopener">recommended directions</a> runs to roughly seventeen concrete directions across oversight, model cognition, and robustness — capability and alignment evals, interpretability, chain-of-thought faithfulness, behavioural and activation monitoring, weak-to-strong and easy-to-hard generalisation, honesty, jailbreak benchmarks, unlearning. An inventory of problems a lab would hire you to solve tomorrow.</li>
-    <li><b>An independent org's backlog.</b> <a class="lnk" href="https://blog.redwoodresearch.org/p/recent-redwood-research-project-proposals" target="_blank" rel="noopener">Redwood's project proposals</a> are the least polished and the most immediately usable: control protocols and monitoring, training-time alignment and reward hacking, interpretability, plus alignment-faking extensions. Redwood published them so outsiders could pick one up — the shortest path from "I read an agenda" to "I am doing a project."</li>
+    <li><b>A frontier lab's inventory.</b> Anthropic's Alignment Science team's <a class="lnk" href="https://alignment.anthropic.com/2025/recommended-directions" target="_blank" rel="noopener">recommended directions</a> runs to roughly seventeen concrete directions across oversight, model cognition, and robustness — capability and alignment evals, interpretability, <span class="term" data-term="chain-of-thought">chain-of-thought</span> faithfulness, behavioural and activation monitoring, <span class="term" data-term="weak-to-strong">weak-to-strong</span> and easy-to-hard generalisation, honesty, <span class="term" data-term="jailbreak">jailbreak</span> benchmarks, unlearning. An inventory of problems a lab would hire you to solve tomorrow.</li>
+    <li><b>An independent org's backlog.</b> <a class="lnk" href="https://blog.redwoodresearch.org/p/recent-redwood-research-project-proposals" target="_blank" rel="noopener">Redwood's project proposals</a> are the least polished and the most immediately usable: control protocols and monitoring, training-time alignment and <span class="term" data-term="reward-hacking">reward hacking</span>, interpretability, plus alignment-faking extensions. Redwood published them so outsiders could pick one up — the shortest path from "I read an agenda" to "I am doing a project."</li>
   </ul>
 
   <p><b>Where they overlap, the field has converged.</b> Evaluations, interpretability, monitoring of untrusted models, and chain-of-thought faithfulness appear in nearly all of them — your best signal that the problem is real and that work on it will be legible to reviewers, funders, and hiring managers. <b>Where they diverge, the field is still arguing</b>: AISI will spend years on theory yielding asymptotic guarantees, while Redwood's framing assumes powerful AI arrives before any proof does and optimises for protocols that survive a misaligned model today. Notice which side your instincts land on — it determines which agenda's open problems will feel like real problems to you.</p>
 
   <div class="callout">One thing to carry: <b>agendas are attributions of interest, not of authorship.</b> A direction on a lab's list does not mean that lab invented it — weak-to-strong generalisation sits on Anthropic's recommended-directions list, but the technique comes from <a class="lnk" href="https://arxiv.org/abs/2312.09390" target="_blank" rel="noopener">OpenAI's 2023 paper</a> (Burns et al.). Before citing a technique as "X's approach," follow the link to the primary paper and check the byline. Getting this wrong in a one-pager is an unforced error a reviewer notices immediately.</div>
 
-  <h2>Testing the choice: four questions that do real work</h2>
+  <h2 id="testing-choice-four">Testing the choice: four questions that do real work</h2>
 
   <p>The chapter's second exercise gives you a set of questions that look like homework and are actually a filter. Run them honestly and most candidate focuses fail:</p>
 
   <ul>
-    <li><b>What does success look like?</b> If you cannot describe the state of the world in which this technique has worked — a measurable property, a class of failure that no longer occurs, a safety case that now closes — you have chosen a topic, not an intervention.</li>
+    <li><b>What does success look like?</b> If you cannot describe the state of the world in which this technique has worked — a measurable property, a class of failure that no longer occurs, a <span class="term" data-term="safety-case">safety case</span> that now closes — you have chosen a topic, not an intervention.</li>
     <li><b>What is the current status, and if nobody is doing it, why not?</b> The highest-yield question and the one most often skipped. An unworked problem usually has a reason: it needs frontier-model access, a data source nobody has, or a result that does not exist yet. Sometimes the reason is just that it is boring and unassigned — that is the case you want.</li>
     <li><b>Who could you join or contribute to?</b> Naming three organisations, or three people whose recent output you have read, converts a topic into a path. If you can't name them, the topic may be real but your map of it is not.</li>
     <li><b>Does it bite on <em>your</em> threat model?</b> The link back to unit 5 keeps this from being a popularity contest. Interpretability is excellent work; it is not obviously the fastest lever against a threat model dominated by, say, misuse of open-weight models by low-resource actors.</li>
   </ul>
 
-  <h2>Where this chapter breaks</h2>
+  <h2 id="where-chapter-breaks">Where this chapter breaks</h2>
 
   <p>Three honest limitations. <b>Staleness</b>: these are 2024–2025 documents in a field with roughly annual turnover of fashionable problems, and one of the four organisations has since changed its name — check the org's current page before building a plan on it. <b>Prestige capture</b>: it is easy to pick the direction attached to the most impressive lab rather than the one where your marginal contribution is largest; the funder's list and the small-org backlog are better guides to marginal value. <b>Over-commitment</b>: "pick one" is a forcing function for a decision you can act on this month, not a vow — BlueDot's own guidance is blunt that a strong portfolio means skipping the project and just applying.</p>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 
   <h2 id="readings">Readings, linked</h2>
   <p>The course budgets 35 minutes for the four core readings and about an hour for the second exercise, totalling 1h 50m with the five optional agenda documents. Start with the MATS talent-needs report — it reframes what you are choosing between before you look at any agenda.</p>
@@ -94,7 +101,7 @@
     <li><b>Agenda-overlap diff</b> <span class="code">code</span> — <em>Field map extra, not part of the course.</em> Turn the four agendas into a comparison table instead of reading them linearly, so that convergence and disagreement become visible rather than remembered. Build a small script that extracts each agenda's list of research areas, normalises the names to a shared vocabulary, and emits a matrix of area × organisation plus a ranked list of areas by how many organisations name them. <em>What a good answer has:</em> a table where at least one area is claimed by all four sources, at least one is claimed by exactly one, and a short written note on what each pattern implies for a newcomer's marginal value. <em>Start here:</em> (1) save the four agenda pages locally with <code>curl</code> — note that the Coefficient Giving page blocks automated fetches, so copy that one out of a browser by hand; (2) strip to text with <code>trafilatura</code> or <code>readability-lxml</code>; (3) pull candidate headings with a regex over <code>&lt;h2&gt;</code>/<code>&lt;h3&gt;</code> tags, or ask a small local model such as Qwen2.5-7B-Instruct via <code>ollama</code> to emit one JSON array of area names per document; (4) normalise synonyms by hand into a mapping dict — "mech interp" / "understanding model cognition" / "interpretability" are one row; (5) build the matrix with <code>pandas</code> and print it; (6) write three sentences on the areas with a count of 4 and the areas with a count of 1. Runs on a laptop in under two hours and produces an artifact you can put in the one-pager.</li>
   </ol>
 
-  <h2>Go deeper</h2>
+  <h2 id="deeper">Go deeper</h2>
   <ul>
     <li><a class="lnk" href="https://arxiv.org/abs/2312.09390" target="_blank" rel="noopener">Weak-to-Strong Generalization</a> — Burns et al., OpenAI (2023). The primary source for a direction that appears on other labs' agenda lists; a useful worked example of checking authorship before you attribute a technique.</li>
     <li><a class="lnk" href="https://www.matsprogram.org/" target="_blank" rel="noopener">MATS Program</a> — the organisation behind the talent-needs report, and one of the main structured on-ramps for people at exactly this stage. Their mentor list doubles as a live directory of who is actively taking on research directions.</li>
@@ -106,6 +113,7 @@
   <div class="callout">Next: <a class="lnk" href="../unit6/ch3.html">Create your 1-pager</a> · Back to the <a class="lnk" href="../index.html#u6">map</a>.</div>
 </main>
 <footer>Original explanation of BlueDot Impact's Technical AI Safety course, unit 6 chapter 2. Course text © BlueDot Impact; this page links, it does not copy.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>

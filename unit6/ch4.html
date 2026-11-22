@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -25,7 +27,7 @@
 
   <p class="lead">Unit 6 has walked you from "I finished a course" to "I have a focus and a one-pager." This chapter is where the abstraction ends and URLs begin. It exists because the most common failure mode at this exact point is not rejection — it is never applying, on the theory that six more months of reading will make you legible. The chapter's implicit claim is that the field is small enough and young enough that legibility comes from doing, and the fastest way to do is to get hired by one of the roughly two dozen organisations that already have the funding and the problems.</p>
 
-  <h2>Why "not ready" is usually the wrong diagnosis</h2>
+  <h2 id="ready-usually-wrong">Why "not ready" is usually the wrong diagnosis</h2>
   <p>The single link in the chapter's body text is a survey BlueDot ran across more than ten safety organisations, asking what they were actually short of. The answer was not "people with alignment PhDs." It was people who can take a poorly-specified problem, own it end to end, and not need a manager to convert it into tickets — plus genuine, non-performative concern about the risk. That combination is rare in any field. It is not, however, a thing you acquire by reading more papers.</p>
 
   <blockquote class="q"><span>"Given that relatively few people can claim 5+ years of direct AI safety experience, orgs are looking for the next best thing"</span><span class="cite">— <a href="https://blog.bluedot.org/p/we-asked-ai-safety-orgs-about-their-hiring-needs" target="_blank" rel="noopener">We asked 10+ AI safety orgs about their hiring needs</a>, Li-Lian Ang (2026)</span></blockquote>
@@ -36,21 +38,26 @@
 
   <p>Context is what a course, a weekend replication, and a careful reading of one org's last three papers buys you. It is measured in weeks. Deciding to wait for it costs you a hiring cycle.</p>
 
-  <h2>The field is not one kind of employer</h2>
+  <h2 id="field-kind-employer">The field is not one kind of employer</h2>
   <p>Reading the twelve organisations below as a flat list hides the most decision-relevant thing about them: they are funded differently, and funding shapes what the job feels like day to day. Five rough shapes, and the list maps onto them cleanly.</p>
   <p><b>Philanthropically funded nonprofits</b> — METR, Redwood, Epoch, FAR.AI, CivAI, MATS, AI Digest. Freedom to work on things with no buyer; the flip side is that the work is only as durable as the next grant cycle, and headcount moves in steps rather than smoothly. Compensation at the larger ones is nonetheless competitive with industry: METR publishes technical-staff bands starting in the low-to-mid six figures.</p>
-  <p><b>Venture-backed companies whose product <em>is</em> safety research</b> — Goodfire, and to a different degree Apollo, which sells a security product alongside its scheming research. The bet here is commercial-incentive alignment: if customers pay for interpretability, the company gets to do more interpretability. Worth stress-testing in interviews — ask what happens to the research agenda when a large customer wants something adjacent to it.</p>
+  <p><b>Venture-backed companies whose product <em>is</em> safety research</b> — Goodfire, and to a different degree Apollo, which sells a security product alongside its <span class="term" data-term="deceptive-alignment">scheming</span> research. The bet here is commercial-incentive alignment: if customers pay for interpretability, the company gets to do more interpretability. Worth stress-testing in interviews — ask what happens to the research agenda when a large customer wants something adjacent to it.</p>
   <p><b>Liability and assurance plays</b> — AIUC. This is the least AI-safety-shaped org on the list and arguably the most interesting structural bet: if agents cannot be deployed at scale until someone underwrites the downside, then the underwriter's audit standard becomes a de facto safety regulation with a market behind it.</p>
   <p><b>Government</b> — the UK AI Security Institute. Different currency entirely: statutory access to frontier models pre-deployment, and a research output (Inspect) that half the field now runs its evals on. You trade equity upside and speed for reach.</p>
   <p><b>Profit-subsidised research</b> — AE Studio, which funds an in-house alignment team from consulting revenue. The unusual property is that the research team is not fundraising, so it can chase directions nobody else will fund.</p>
 
-  <h2>What a strong application looks like from the other side of the table</h2>
+  <h2 id="strong-application-looks">What a strong application looks like from the other side of the table</h2>
   <p>Most of these teams are between 3 and 50 people. There is no requisition machinery, no keyword screen, and frequently the person reading your application is the person you would report to. Three practical consequences.</p>
   <p>First, specificity beats enthusiasm. "I care about AI risk" is the baseline, not a differentiator — every applicant writes it. "Your <a href="https://metr.org/blog/" target="_blank" rel="noopener">time-horizons methodology</a> assumes X, and I think the assumption breaks for agentic coding tasks because Y" is a differentiator, and it takes an afternoon.</p>
   <p>Second, artefacts beat claims. A small public replication, a plot, a short writeup, a merged PR against an open eval harness — anything that lets a reader verify your reasoning without trusting you. Unit 6's one-pager exercise is the minimum version of this; a repo is the better one.</p>
-  <p>Third, apply broadly and in parallel. The variance between orgs on what they select for is enormous — Redwood is hiring for one role at extreme seniority, Apollo has fourteen open across governance, security engineering and control research, FAR.AI is hiring red-teamers remotely and researchers on-site. Self-rejecting from the whole list because you do not fit the first entry is a category error.</p>
+  <p>Third, apply broadly and in parallel. The variance between orgs on what they select for is enormous — Redwood is hiring for one role at extreme seniority, Apollo has fourteen open across governance, security engineering and control research, FAR.AI is hiring <span class="term" data-term="red-teaming">red-teamers</span> remotely and researchers on-site. Self-rejecting from the whole list because you do not fit the first entry is a category error.</p>
 
   <div class="callout">Carry this away: the field's hiring bottleneck is <em>ownership plus context</em>, in that order. You cannot fake ownership and you do not need to fake context — you need one concrete artefact showing you have engaged with a specific org's actual open problem. Build that artefact first, then send it to five places in the same week.</div>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 
   <h2 id="readings">Readings, linked</h2>
   <p>The course budgets no fixed reading time here — it is a directory, and the intended use is to skim all twelve, pick three, and apply. Read the <a href="https://blog.bluedot.org/p/we-asked-ai-safety-orgs-about-their-hiring-needs" target="_blank" rel="noopener">hiring-needs survey</a> first; it calibrates everything below. Org descriptions are the course's; role counts, locations and salary bands were checked against each employer's live job board in September 2026 and are marked as such, because these change weekly.</p>
@@ -77,7 +84,7 @@
     <li><b>The rejection budget</b> <em>(field map extra)</em> — Decide, in writing and before you send anything, how many rejections you will collect before you change strategy. Then send that many applications. <em>What a good answer has:</em> a number greater than one and a written trigger — "after eight rejections with no first-round interview, the problem is my artefact, not my targeting; after eight first-rounds with no offer, it is the interview." This exercise exists because the failure this chapter is written against is not being rejected; it is applying once, treating a single "no" as evidence about the field, and quietly stopping.</li>
   </ol>
 
-  <h2>Go deeper</h2>
+  <h2 id="deeper">Go deeper</h2>
   <ul>
     <li><a href="https://blog.bluedot.org/p/we-asked-ai-safety-orgs-about-their-hiring-needs" target="_blank" rel="noopener">We asked 10+ AI safety orgs about their hiring needs</a> — Li-Lian Ang, BlueDot (Feb 2026). The chapter's only body link and the argument underneath the whole page: what orgs are short of, broken down by engineering, research, comms and policy.</li>
     <li><a href="https://jobs.80000hours.org/" target="_blank" rel="noopener">80,000 Hours job board</a> — the widest curated listing of high-impact roles, filterable by AI safety and technical. Covers everything on this page plus frontier-lab safety teams, think tanks and government posts the course does not name.</li>
@@ -89,6 +96,7 @@
   <div class="callout">Next: <a class="lnk" href="../unit6/ch5.html">Next steps: Technical fellowships</a> · Back to the <a class="lnk" href="../index.html#u6">map</a>.</div>
 </main>
 <footer>Original explanation of BlueDot Impact's Technical AI Safety course, unit 6 chapter 4. Course text © BlueDot Impact; this page links, it does not copy.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>

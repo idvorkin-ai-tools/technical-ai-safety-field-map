@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -21,25 +23,25 @@
   <div class="authors">BlueDot Impact · Technical AI Safety · unit 5, chapter 3</div>
   <div class="paperlink" style="border-left-color:var(--def)"><span class="lbl">Course page</span><a href="https://bluedot.org/courses/technical-ai-safety/5/3" target="_blank" rel="noopener">Break the kill chain — BlueDot ↗</a></div>
 
-  <div class="tldr"><b>TL;DR —</b> A threat scenario is a sentence; a kill chain is the ordered set of things that all have to go right for that sentence to come true. Staging it converts a scary story into an engineering problem, because every stage is a place a defender can stand. The payoff is finding the load-bearing capability — the one link with no cheap substitute — and aiming the course's three lever positions at it: prevent it in training, detect it with evals and interpretability, constrain it at inference with control and filtering. The method's limit is that it assumes a discrete adversary taking discrete steps, which is exactly the shape gradual-disempowerment and inside-the-defence failures do not have.</div>
+  <div class="tldr"><b>TL;DR —</b> A threat scenario is a sentence; a <span class="term" data-term="kill-chain">kill chain</span> is the ordered set of things that all have to go right for that sentence to come true. Staging it converts a scary story into an engineering problem, because every stage is a place a defender can stand. The payoff is finding the load-bearing capability — the one link with no cheap substitute — and aiming the course's three lever positions at it: prevent it in training, detect it with evals and interpretability, constrain it at inference with control and filtering. The method's limit is that it assumes a discrete adversary taking discrete steps, which is exactly the shape gradual-disempowerment and inside-the-defence failures do not have.</div>
 
-  <p class="lead">This chapter is the unit's assembly step, and it assigns no new readings. Units 2 through 5 handed you a toolbox — safer training data, RLHF and Constitutional AI, dangerous-capability evals, interpretability probes, monitoring, filtering, AI control — and chapter 2 handed you a threat scenario you wrote yourself. The question nobody answers by accident is: <em>against my specific threat, which tool goes where, and does the stack hold?</em> The kill chain is the data structure that makes that answerable instead of rhetorical.</p>
+  <p class="lead">This chapter is the unit's assembly step, and it assigns no new readings. Units 2 through 5 handed you a toolbox — safer training data, RLHF and <span class="term" data-term="constitutional-ai">Constitutional AI</span>, dangerous-capability evals, interpretability <span class="term" data-term="linear-probe">probes</span>, monitoring, filtering, <span class="term" data-term="ai-control">AI control</span> — and chapter 2 handed you a threat scenario you wrote yourself. The question nobody answers by accident is: <em>against my specific threat, which tool goes where, and does the stack hold?</em> The kill chain is the data structure that makes that answerable instead of rhetorical.</p>
 
-  <h2>What a kill chain actually is</h2>
+  <h2 id="kill-chain-actually">What a kill chain actually is</h2>
 
   <p>The idea is borrowed from network defence. Lockheed Martin's <a class="lnk" href="https://www.lockheedmartin.com/en-us/capabilities/cyber/cyber-kill-chain.html" target="_blank" rel="noopener">Cyber Kill Chain</a> answered a specific institutional failure: security teams were writing incident reports about individual malware samples and learning nothing transferable. It reframed an intrusion as a <em>sequence</em> — reconnaissance, weaponisation, delivery, exploitation, installation, command-and-control, actions on objectives — making the sequence the unit of analysis rather than the payload. That lets you say something a per-incident report never does: the attacker had to complete all seven stages, and I only had to break one.</p>
 
   <p>That asymmetry inverts the usual attacker-advantage framing. Under "the attacker only has to be right once", defence is hopeless; under the kill chain, the attacker has to be right at every stage in order and the defender picks whichever stage is cheapest to instrument. Neither is wrong — they describe different games. The kill chain applies when the harm requires a <em>chain</em> of successes rather than one lucky shot, which is true of every catastrophic pathway the course names: a coup, an engineered pandemic, an infrastructure takedown. None of those is one prompt. MITRE later generalised the same move into <a class="lnk" href="https://attack.mitre.org/" target="_blank" rel="noopener">ATT&amp;CK</a> and, for machine-learning systems specifically, <a class="lnk" href="https://atlas.mitre.org/" target="_blank" rel="noopener">ATLAS</a>; borrow their stage names rather than inventing your own.</p>
 
-  <h2>Scenario versus chain: the difference that does the work</h2>
+  <h2 id="scenario-versus-chain">Scenario versus chain: the difference that does the work</h2>
 
   <p>At the end of chapter 2 you wrote a scenario in the form <span class="mono">The [ACTOR] with [CAPABILITY] and [MOTIVATION] attacks [ASSET] by [ATTACK PATHWAY] in order to [OBJECTIVE]</span>. That sentence is a claim about the world: falsifiable in principle, useless in practice, because it has no internal joints — nowhere to put a defence, and no way to argue about whether the defence would work.</p>
 
-  <p>Staging it gives it joints. Say a well-resourced group wants a frontier model to shorten the path from published virology literature to a working pathogen. As a chain that becomes: acquire model access that is not rate-limited or attributable; elicit synthesis knowledge the model was trained to refuse; convert it into an executable protocol; acquire the physical materials past screening; do the wet-lab work with troubleshooting; release. Now there are six arguments instead of one, with different experts and different owners. Access control is a deployment question, elicitation a jailbreak-robustness question, and materials screening not an AI question at all — which is itself a finding, because some of your best choke points sit entirely outside the model.</p>
+  <p>Staging it gives it joints. Say a well-resourced group wants a frontier model to shorten the path from published virology literature to a working pathogen. As a chain that becomes: acquire model access that is not rate-limited or attributable; elicit synthesis knowledge the model was trained to refuse; convert it into an executable protocol; acquire the physical materials past screening; do the wet-lab work with troubleshooting; release. Now there are six arguments instead of one, with different experts and different owners. Access control is a deployment question, <span class="term" data-term="elicitation">elicitation</span> a <span class="term" data-term="jailbreak">jailbreak</span>-robustness question, and materials screening not an AI question at all — which is itself a finding, because some of your best choke points sit entirely outside the model.</p>
 
   <p>The discipline that makes staging honest is writing, per stage, three things: what the attacker does, what has to be <em>true</em> for it to succeed, and what a defender could <em>observe</em> if it were happening. The third column is the one people skip and the one that decides whether the chain is actionable. A stage nobody can observe is not a choke point; it is a hope.</p>
 
-  <h2>Finding the load-bearing link</h2>
+  <h2 id="finding-load-bearing-link">Finding the load-bearing link</h2>
 
   <p>The chapter's sharpest prompt is whether removing one capability collapses the entire threat. Read literally that is usually too strong — real chains have redundancy — but as a search heuristic it is excellent, because it forces you to distinguish two things that look alike on a diagram. A stage is <b>conjunctive</b> if the attacker needs it and has no substitute: an AND gate. It is <b>disjunctive</b> if there are three other ways to get the same effect: an OR gate. Defences on OR-gate stages buy almost nothing, because the attacker reroutes for the cost of an afternoon; defences on AND-gate stages buy the whole chain. So the question is not "which capability sounds scariest" but "which has no cheap substitute" — and the test is a counterfactual you run adversarially against yourself: <em>if I successfully deny this, what does a competent attacker do instead, and what does it cost them?</em> If the answer is "use an open-weights model with the safeguards stripped", your choke point is a speed bump, and it is much better to learn that on paper.</p>
 
@@ -47,11 +49,11 @@
 
   <blockquote class="q"><span>"Historically, jailbreaks have proved difficult to detect and block: these kinds of attacks were described over 10 years ago, yet to our knowledge there are still no fully robust deep-learning models in production."</span><span class="cite">— <a href="https://www.anthropic.com/news/constitutional-classifiers" target="_blank" rel="noopener">Constitutional Classifiers: Defending against universal jailbreaks</a>, Anthropic (2025)</span></blockquote>
 
-  <h2>Three lever positions: prevent, detect, constrain</h2>
+  <h2 id="three-lever-positions">Three lever positions: prevent, detect, constrain</h2>
 
   <p>Once you have the load-bearing capability, the chapter asks you to attack it from three directions — which are the course's earlier units re-sorted by <em>when</em> they act.</p>
 
-  <p><b>Prevent</b> acts before the capability exists: data filtering, unlearning and refusal training from unit 2. It is the only lever that removes risk rather than managing it, and the most brittle, because capabilities are entangled — the virology you would like the model not to know is the virology that makes it useful to vaccine researchers. Prevention also fails silently: you cannot easily prove absence, and a capability that was suppressed rather than removed can be elicited by a better prompt or restored by a few hundred fine-tuning steps.</p>
+  <p><b>Prevent</b> acts before the capability exists: data filtering, unlearning and refusal training from unit 2. It is the only lever that removes risk rather than managing it, and the most brittle, because capabilities are entangled — the virology you would like the model not to know is the virology that makes it useful to vaccine researchers. Prevention also fails silently: you cannot easily prove absence, and a capability that was suppressed rather than removed can be elicited by a better prompt or restored by a few hundred <span class="term" data-term="fine-tuning">fine-tuning</span> steps.</p>
 
   <p><b>Detect</b> acts on the trained artefact: dangerous-capability evaluations from unit 3, interpretability probes from unit 4, runtime monitoring from unit 5.1. Detection is where most of the field's effort sits, and it has a structural weakness the exercise will surface if you are honest: base rates. A monitor with 99% accuracy on a stream where 1 in 100,000 actions is an attack raises roughly a thousand false alarms for every true one. At production volume that is not a monitor, it is a denial-of-service on your review team. This is why the useful published work measures <em>catch rate at a fixed alarm budget</em> — see Anthropic's <a class="lnk" href="https://alignment.anthropic.com/2025/cheap-monitors/" target="_blank" rel="noopener">work on cheap monitors</a> — and why a tiered design (cheap model screens everything, expensive model adjudicates the top 1%) is usually the only affordable shape.</p>
 
@@ -59,11 +61,11 @@
 
   <blockquote class="q"><span>"Researchers have not evaluated whether such techniques still ensure safety if the model is itself intentionally trying to subvert them."</span><span class="cite">— <a href="https://arxiv.org/abs/2312.06942" target="_blank" rel="noopener">AI Control: Improving Safety Despite Intentional Subversion</a>, Greenblatt, Shlegeris, Sachan &amp; Roger (2023)</span></blockquote>
 
-  <p>That distinction changes how you evaluate. Prevention and detection can be scored against average behaviour; a constraint has to be scored against a red team that knows your protocol — which is why the control literature reports a game between a blue-team protocol and a best-response attack policy, not a benchmark number.</p>
+  <p>That distinction changes how you evaluate. Prevention and detection can be scored against average behaviour; a constraint has to be scored against a <span class="term" data-term="red-teaming">red team</span> that knows your protocol — which is why the control literature reports a game between a blue-team protocol and a best-response attack policy, not a benchmark number.</p>
 
   <div class="callout">The one thing to carry away: <b>write the counterfactual next to every defence you propose.</b> "Add a classifier at stage 3" is not a finding. "Add a classifier at stage 3; the attacker's cheapest reroute is an open-weights model, costing them a month and X capability" is a finding — and it is the sentence that tells you whether to build the classifier or go work on something else.</div>
 
-  <h2>Where the method breaks</h2>
+  <h2 id="where-method-breaks">Where the method breaks</h2>
 
   <p>Three failure modes are worth naming before you trust your own chain.</p>
 
@@ -72,6 +74,11 @@
   <p><b>The defender may be inside the chain.</b> When the threat actor is a misaligned model rather than a human using one, several of your defences are implemented by models drawn from the same distribution as the threat — the monitor, the classifier, the summariser feeding your dashboard. Correlated failure is the default assumption, not the pessimistic one. The standard mitigation is a trust asymmetry: a weaker but trusted model watches a stronger untrusted one.</p>
 
   <p><b>Capability lists drift into wishlists.</b> "Long-term planning" is not a capability, it is a genre. A capability you can defend against has an operationalisation — a task, a threshold, a measurement procedure. If yours cannot in principle become an eval with a pass/fail line, you cannot detect it, and two of your three levers are gone before you start.</p>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 
   <h2 id="readings">Readings, linked</h2>
   <p>The course assigns <b>no new readings</b> for this chapter — the full 50 minutes is exercise time. What follows is the material the exercise actually draws on, all of it from earlier in unit 5; if you are picking one thing up first, make it the AI control overview, since it supplies the prevent / detect / constrain vocabulary the third exercise is built on.</p>
@@ -105,7 +112,7 @@
       <em>Start here:</em> (1) build a 200-item labelled set — 100 benign requests that superficially resemble your attack stage (a virologist asking legitimate questions, an admin doing legitimate privileged operations) and 100 positives you write by hand or generate; the hard negatives are the whole experiment, since separating attacks from obviously-unrelated traffic is trivial and proves nothing. (2) Use a small instruct model as the trusted monitor — <span class="mono">Qwen2.5-1.5B-Instruct</span> or <span class="mono">Llama-3.2-1B-Instruct</span> via HuggingFace <span class="mono">transformers</span> runs on a free Colab T4 or a laptop CPU at this scale — prompted to return a 0–100 suspicion score; a cheap API model works too if you prefer. (3) Score all 200 items, then use <span class="mono">sklearn.metrics.roc_curve</span> to get TPR at FPR = 0.01 and 0.001 rather than picking a threshold by eye. (4) Multiply out to your deployment volume and write down the daily false-alarm count. (5) Optional but where the insight is: add a second tier — send only the top 1% by suspicion to a larger adjudicator model — and recompute both the catch rate and the compute cost, which is the same tiered-defence trade-off Anthropic reports in the <a class="lnk" href="https://alignment.anthropic.com/2025/cheap-monitors/" target="_blank" rel="noopener">cheap monitors</a> work. (6) Write the number into the <span class="mono">defence</span> column of your exercise-1 file.</li>
   </ol>
 
-  <h2>Go deeper</h2>
+  <h2 id="deeper">Go deeper</h2>
   <ul>
     <li><a href="https://attack.mitre.org/" target="_blank" rel="noopener">MITRE ATT&amp;CK</a> and <a href="https://atlas.mitre.org/" target="_blank" rel="noopener">MITRE ATLAS</a> — the shared vocabulary for adversary tactics and techniques, ATLAS being the machine-learning-specific matrix. Borrow their stage names so your chain is legible to security people who have never heard of alignment.</li>
     <li><a href="https://arxiv.org/abs/2312.06942" target="_blank" rel="noopener">AI Control: Improving Safety Despite Intentional Subversion</a> — Greenblatt, Shlegeris, Sachan &amp; Roger (2023). The paper behind unit 5.1's control overview; read it for the methodology, where every blue-team protocol is scored against a red team that knows the protocol. That is the evaluation standard your exercise-3 "constrain" answer should be aiming at.</li>
@@ -117,6 +124,7 @@
   <div class="callout">Next: <a class="lnk" href="../unit6/ch1.html">Your next steps</a> · Back to the <a class="lnk" href="../index.html#u5">map</a>.</div>
 </main>
 <footer>Original explanation of BlueDot Impact's Technical AI Safety course, unit 5 chapter 3. Course text © BlueDot Impact; this page links, it does not copy.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>

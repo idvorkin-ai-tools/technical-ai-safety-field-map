@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -25,29 +27,34 @@
 
   <p class="lead">Units 1 through 5 were about the field: what could go wrong, how labs try to train it out, how evaluators try to detect it, how interpretability tries to see it, how defenders try to contain it. This chapter turns the camera around. The course's bet is that the bottleneck between "I understand this field" and "I am working in this field" is usually not knowledge — it is that nobody, including you, can state in two sentences what you would be good for. The 1-pager is the forcing function for that sentence.</p>
 
-  <h2>Why a document, and why only one page</h2>
+  <h2 id="document-only-page">Why a document, and why only one page</h2>
   <p>A page is a budget, and budgets do the reasoning for you. At CV length you can list everything you have ever touched and never commit; at one page you have to drop things, and the dropping is the work. The constraint also matches the actual consumption pattern — a hiring manager at a small safety org, a MATS mentor, or someone in your cohort's Slack will give this thirty seconds, once. Anything that does not survive thirty seconds is not doing a job.</p>
   <p>There is a second, quieter reason. Most people entering this field are switching in from something adjacent — infra, ML engineering, security, biology, policy, product. A CV renders that history as a list of employers, which invites the reader to conclude "not an AI safety person". A 1-pager renders it as a set of capabilities pointed at a problem, which invites the opposite conclusion. Same facts, different frame, and the frame is the whole game when you have no in-field track record yet.</p>
 
-  <h2>The five slots, and what each one is really asking</h2>
+  <h2 id="five-slots-each">The five slots, and what each one is really asking</h2>
   <p><b>Header</b> — name plus live links: LinkedIn, GitHub, Scholar, personal site. Trivially, this is contact info. Practically, it is the first credibility check: a GitHub with nothing in it is worse than no GitHub link, and one repo with a real README beats five abandoned forks.</p>
   <p><b>Focus</b> — two or three sentences on what you want to work on and why. This is the slot people get wrong, and they get it wrong in the same way: they name a <em>role</em> ("I want to be an alignment researcher") instead of a <em>problem</em> ("I want to work on whether eval results transfer from lab conditions to deployed agents"). A role is a queue you join behind everyone else. A problem is something you can start on this weekend, and something a reader can immediately match against their open work. The template also asks for hard constraints — location, visa, timing — and you should actually write them, because a mismatch discovered in week one costs both sides nothing and a mismatch discovered in month three costs everything.</p>
   <p><b>Target roles</b> — optional, and correctly so. If you have a shortlist, name it. If you do not, leaving it blank is more honest than manufacturing one, and the focus paragraph is already doing the routing.</p>
   <p><b>Experience</b> — the template's own instruction here is "brag", and it means it. The unit of an entry is not a job, it is a thing you produced and the scale you produced it at: the pipeline you owned, the eval harness you wrote, the paper you reproduced, the incident you ran point on. Link everything that has a URL. Vague competence claims are free to write and therefore worth nothing; a link costs you a real artifact and is therefore worth a lot.</p>
   <p><b>Engagement with AI safety</b> — courses, reading groups, hackathons, blog posts, whatever you have committed to next. This slot exists because in a field where most applicants have no in-field employment, demonstrated voluntary engagement is the cheapest available signal that you will still be here in a year.</p>
 
-  <h2>Positioning: you are not competing on one ladder</h2>
-  <p>The reason the course pairs this exercise with John Wentworth's Pareto-frontier post is that most career anxiety assumes a single ranking — that there is one queue of "AI safety researchers" and your job is to climb it. That model is both discouraging and wrong. The useful question is not "am I in the top N at machine learning" but "is there a pair or triple of things where nobody is better than me at all of them simultaneously". Distributed-systems reliability crossed with eval design. Wet-lab biology crossed with red-teaming. Compiler work crossed with interpretability tooling. These intersections are underpopulated because nobody optimises for them deliberately.</p>
+  <h2 id="positioning-competing-ladder">Positioning: you are not competing on one ladder</h2>
+  <p>The reason the course pairs this exercise with John Wentworth's Pareto-frontier post is that most career anxiety assumes a single ranking — that there is one queue of "AI safety researchers" and your job is to climb it. That model is both discouraging and wrong. The useful question is not "am I in the top N at machine learning" but "is there a pair or triple of things where nobody is better than me at all of them simultaneously". Distributed-systems reliability crossed with eval design. Wet-lab biology crossed with <span class="term" data-term="red-teaming">red-teaming</span>. Compiler work crossed with interpretability tooling. These intersections are underpopulated because nobody optimises for them deliberately.</p>
   <blockquote class="q"><span>"Thanks to the 'curse' of dimensionality, these goldmines are not in any danger of exhausting."</span><span class="cite">— <a href="https://www.lesswrong.com/posts/XvN2QQpKTuEzgkZHY/being-the-pareto-best-in-the-world" target="_blank" rel="noopener">Being the (Pareto) Best in the World</a>, John Wentworth (2019)</span></blockquote>
   <p>Concretely: when you write the focus paragraph, write the intersection, not the field. "Systems engineer moving into agent-safety evaluation, with ten years of production incident response" is a sentence only a few hundred people on earth can write. "Interested in AI alignment" is a sentence a hundred thousand people can write, and it therefore transmits no information at all.</p>
 
-  <h2>If the page comes out thin</h2>
+  <h2 id="if-page-comes">If the page comes out thin</h2>
   <p>Many people finish the draft and find the experience section short and the engagement section shorter. That is diagnostic, not disqualifying, and the optional readings split cleanly into responses to it. Toby Shevlane's lean-startup framing is the calibration dose — early ideas are mostly bad, so the correct move is many cheap iterations with fast external feedback rather than one long private bet.</p>
   <blockquote class="q"><span>"At the early stage of your research career, 80-100% of your project ideas are bad."</span><span class="cite">— <a href="https://forum.effectivealtruism.org/posts/jfHPBbYFzCrbdEXXd/how-to-succeed-as-an-early-stage-researcher-the-lean-startup" target="_blank" rel="noopener">How to succeed as an early-stage researcher</a>, Toby Shevlane (2021)</span></blockquote>
   <p>From there it is a routing problem. If the gap is <b>engineering depth</b>, Gabe Mukobi's levelling-up ladder is an explicit seven-stage curriculum with hour estimates. If the gap is <b>research output</b>, Neel Nanda's mech-interp guide is the tightest existing recipe: learn the minimum, then produce throwaway projects with fast feedback loops, then publish. If the gap is <b>structure</b> — no job, no lab, no supervisor — Marius Hobbhahn and Wentworth both argue that unstructured independent research is harder than it looks and that a funded or cohort-based program beats going solo. If the gap is <b>direction</b>, the Rogers-Smith careers guide and the 80,000 Hours review are the two long maps of the option space.</p>
   <p>The common thread across all five: every one of them tells you to produce something public. That is not a coincidence. In a field with no standard credential, the artifact <em>is</em> the credential — and the 1-pager is just the index page pointing at your artifacts.</p>
 
   <div class="callout">The one thing to carry away: write it in an hour and send it to someone the same day. The 1-pager's value is almost entirely in the feedback loop it opens — a cohort-mate saying "your focus paragraph doesn't tell me what you'd do on Monday" is worth more than three more hours of solo polishing. Version it, and rewrite it after every project you finish.</div>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 
   <h2 id="readings">Readings, linked</h2>
   <p>The course budgets one hour, and all of it is meant to go into writing — only the 1-pager template is required, everything below it is optional. Read the template first, draft against it, and pull in whichever of the optional pieces matches the slot you struggled with. If you want just one, make it the Rogers-Smith careers guide (long, but the most action-guiding).</p>
@@ -69,7 +76,7 @@
     <li><b>Create your 1-pager</b> — Spend about an hour producing a single-page document that states what you are looking for in AI safety and what you bring to it. Work from the BlueDot template (below, reproduced in fillable form) or any format you prefer — the sections matter, the styling does not. When you are done: make the doc shareable (anyone-with-link can comment), submit it on the course page, and post it to your cohort's Slack for feedback. On submission you can opt in to having BlueDot share it with safety orgs that have relevant openings, so write it as something a stranger could act on. <em>What a good answer has:</em> a Focus paragraph naming a <b>problem</b> and not a job title, plus your hard constraints; an Experience section where every bullet is a thing you produced with a link, and a number attached wherever a number exists (dataset size, latency, team size, users, papers); an Engagement section that includes at least one <b>forward-looking</b> commitment, not only past courses; and no sentence that a hundred thousand other people could also have written. Deliberately leave it rough — the template's own instruction is "good enough", and the feedback loop is worth more than the polish.</li>
   </ol>
 
-  <h2>The template, ready to fill in</h2>
+  <h2 id="template-ready-fill">The template, ready to fill in</h2>
   <p>Copy the block below into a doc and replace every bracket. Each field carries the question it is actually asking, not just its name. Target one page; if it runs over, cut from Experience, not from Focus.</p>
   <ul>
     <li><b class="mono">[YOUR NAME]</b><br />[LinkedIn] · [GitHub] · [Google Scholar] · [Personal site] — <em>drop any link that would embarrass you; an empty profile reads worse than an absent one.</em></li>
@@ -89,7 +96,7 @@
     <li><b class="mono">ONE-LINE SUMMARY (optional, top of page)</b> — [Your intersection in a single line: "&lt;prior competence&gt; moving into &lt;specific safety problem&gt;, with &lt;the unusual second axis&gt;." Write this last; it falls out of the rest.]</li>
   </ul>
 
-  <h2>Go deeper</h2>
+  <h2 id="deeper">Go deeper</h2>
   <ul>
     <li><a href="https://www.arena.education/" target="_blank" rel="noopener">ARENA (Alignment Research Engineer Accelerator)</a> — the 4–5 week in-person London bootcamp the Nanda guide points at for hands-on fundamentals; its curriculum is also freely usable as self-study material if you can't attend.</li>
     <li><a href="https://www.matsprogram.org/" target="_blank" rel="noopener">MATS</a> — the mentored research program most often named as the alternative to unstructured independent research; useful as a concrete target for the "Target roles" slot.</li>
@@ -101,6 +108,7 @@
   <div class="callout">Next: <a class="lnk" href="../unit6/ch4.html">Next steps: Apply to roles</a> · Back to the <a class="lnk" href="../index.html#u6">map</a>.</div>
 </main>
 <footer>Original explanation of BlueDot Impact's Technical AI Safety course, unit 6 chapter 3. Course text © BlueDot Impact; this page links, it does not copy.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>
