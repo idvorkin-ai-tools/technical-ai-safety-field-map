@@ -86,3 +86,26 @@ blockquote.q .cite a:hover{color:var(--def)}
 /* field-map addition: unclassed links inside the page body follow the accent, not browser blue */
 main a:not([class]){color:var(--def);text-decoration:underline;text-decoration-color:var(--ink-dim);text-underline-offset:2px;text-decoration-thickness:1px}
 main a:not([class]):hover{text-decoration-color:var(--def)}
+
+/* interactive widgets (assets/widgets.js plus widgets/*.js): SVG text and marks on the dark theme */
+.lab svg{max-width:540px;margin-left:auto;margin-right:auto}
+.lab svg text{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10.5px;fill:var(--ink-mid)}
+.lab svg .t-dim{fill:var(--ink-dim)}
+.lab svg .t-mid{fill:var(--ink-mid)}
+.lab svg .t-ink{fill:var(--ink)}
+.lab svg .ln-grid{stroke:var(--line);stroke-width:1}
+.lab svg .ln-def{stroke:var(--def)}
+.lab svg .ln-dim{stroke:var(--ink-dim);stroke-dasharray:3 3}
+.lab svg .bar-def{fill:var(--def)}
+.lab svg .bar-off{fill:var(--off)}
+.lab svg .bar-dim{fill:var(--ink-dim);opacity:.45}
+.lab li::before,.lab-try::before{content:none}
+
+/* long inline code (URLs, regexes) wraps instead of pushing the page sideways */
+main code{overflow-wrap:anywhere}
+
+/* narrow screens: the top bar holds brand, mode switch and back link; wrap instead of scrolling sideways */
+@media (max-width:600px){
+  .bar-in{flex-wrap:wrap;gap:6px 10px;padding:9px 16px}
+  .bar .brand{flex:1 0 100%;font-size:12px}
+}
