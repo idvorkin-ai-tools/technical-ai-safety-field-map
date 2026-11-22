@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -21,7 +23,7 @@
   <div class="authors">BlueDot Impact · Technical AI Safety · unit 5, chapter 2</div>
   <div class="paperlink" style="border-left-color:var(--def)"><span class="lbl">Course page</span><a href="https://bluedot.org/courses/technical-ai-safety/5/2" target="_blank" rel="noopener">Building defences — BlueDot ↗</a></div>
 
-  <div class="tldr"><b>TL;DR —</b> Everything up to here has been the syllabus: train it safer, evaluate it, interpret it, monitor it, filter it. This chapter is the exam. You pick one concrete way the world goes badly wrong — an AI-enabled coup, infrastructure collapse, an engineered pandemic, or gradual disempowerment — and write out the <em>kill chain</em>: the ordered steps an actor must complete, the AI capability each step needs, and which defence actually touches that step. The answer is almost never "the whole stack holds." It's "three links are guarded twice and one is guarded by nothing," and the useful work is at the unguarded link.</div>
+  <div class="tldr"><b>TL;DR —</b> Everything up to here has been the syllabus: train it safer, evaluate it, interpret it, monitor it, filter it. This chapter is the exam. You pick one concrete way the world goes badly wrong — an AI-enabled coup, infrastructure collapse, an engineered pandemic, or gradual disempowerment — and write out the <em><span class="term" data-term="kill-chain">kill chain</span></em>: the ordered steps an actor must complete, the AI capability each step needs, and which defence actually touches that step. The answer is almost never "the whole stack holds." It's "three links are guarded twice and one is guarded by nothing," and the useful work is at the unguarded link.</div>
 
   <p class="lead">A safety technique with no threat model attached is unfalsifiable. You can always say a classifier "helps" or interpretability "reduces risk," and nobody can tell you you're wrong, because there is no attack it either stops or fails to stop. This chapter fixes that by inverting the direction of reasoning: instead of starting from a defence and asking what it might be good for, you start from a catastrophe, decompose it into the steps required to actually produce it, and ask of each step whether anything in your stack would notice. This chapter builds the scaffolding; <a class="lnk" href="../unit5/ch3.html">chapter 3</a> makes you run it.</p>
 
@@ -30,8 +32,8 @@
   <ul>
     <li><b>Misaligned AI</b> — the case where the actor is the system itself. Motivation is not human intent but whatever objective survived training, and capability is whatever the deployment grants. This is the only actor on the list that your <em>training-time</em> defences can address directly.</li>
     <li><b>Powerful human actors</b> — CEOs, generals, heads of state. Their capability is not compute or model access, it is <em>legitimate authority over the systems the model is wired into</em>. Almost nothing in the technical stack constrains an actor who is inside the trust boundary by design.</li>
-    <li><b>Malevolent states</b> — capability is high and sustained, motivation is strategic rather than ideological, and crucially they can run the attack over years, absorb failures, and steal weights rather than jailbreak an API.</li>
-    <li><b>Terrorist groups and cults</b> — low capability, extreme motivation, and the only class that reliably wants unbounded casualties rather than a specific political outcome. This is the class that <em>uplift</em> arguments are really about: the whole question is whether a model closes the gap between wanting a mass-casualty event and being able to produce one.</li>
+    <li><b>Malevolent states</b> — capability is high and sustained, motivation is strategic rather than ideological, and crucially they can run the attack over years, absorb failures, and steal weights rather than <span class="term" data-term="jailbreak">jailbreak</span> an API.</li>
+    <li><b>Terrorist groups and cults</b> — low capability, extreme motivation, and the only class that reliably wants unbounded casualties rather than a specific political outcome. This is the class that <em><span class="term" data-term="uplift">uplift</span></em> arguments are really about: the whole question is whether a model closes the gap between wanting a mass-casualty event and being able to produce one.</li>
   </ul>
   <p>Notice how differently a defence scores against each. Refusal training and output filtering matter against the cult and are largely irrelevant against the head of state. Interpretability tooling matters against the misaligned model and not against the state actor who has the weights and can strip the safety layers off. A claim that a technique "improves safety" without naming which of these four it constrains is not yet a claim.</p>
 
@@ -56,9 +58,14 @@
 
   <h2 id="where-method-breaks">Where the method breaks</h2>
   <p>Three failure modes to hold in mind while you use it, because a kill chain built badly is worse than none — it produces a coverage diagram that looks reassuring.</p>
-  <p><b>The layers are not independent.</b> Defence in depth assumes uncorrelated holes, and in practice the holes line up: filters and the model share training data, share a notion of what "harmful" looks like, and often share a base model. FAR.AI's STACK work attacks a layered stack one layer at a time — disguise the request past the input filter, elicit the content, disguise the output past the output filter — and gets 71% success on catastrophic-risk queries against a defended model where conventional single-shot attacks get 0%. Four layers is not four times one layer.</p>
-  <p><b>The chain is the attacker's chain, not the world's.</b> You enumerate routes you thought of; a real actor picks the one you didn't. The ordered-stages framing also quietly assumes the attack is sequential and human-legible. An autonomous agent that runs reconnaissance, exploitation and exfiltration concurrently across thirty targets doesn't traverse your diagram in order.</p>
+  <p><b>The layers are not independent.</b> <span class="term" data-term="defense-in-depth">Defence in depth</span> assumes uncorrelated holes, and in practice the holes line up: filters and the model share training data, share a notion of what "harmful" looks like, and often share a base model. FAR.AI's STACK work attacks a layered stack one layer at a time — disguise the request past the input filter, elicit the content, disguise the output past the output filter — and gets 71% success on catastrophic-risk queries against a defended model where conventional single-shot attacks get 0%. Four layers is not four times one layer.</p>
+  <p><b>The chain is the attacker's chain, not the world's.</b> You enumerate routes you thought of; a real actor picks the one you didn't. The ordered-stages framing also quietly assumes the attack is sequential and human-legible. An autonomous agent that runs reconnaissance, exploitation and <span class="term" data-term="exfiltration">exfiltration</span> concurrently across thirty targets doesn't traverse your diagram in order.</p>
   <p><b>One of the four pathways has no chain at all.</b> Gradual disempowerment cannot be decomposed into an actor with a capability attacking an asset — that is precisely its claim. If you build a kill chain for it, you will produce something false. The honest response is to notice that this is a category the method cannot represent, and that the defences it calls for are economic and constitutional rather than technical. A framework's edges are worth more than its coverage.</p>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 
   <h2 id="readings">Readings, linked</h2>
   <p>The course budgets 50 minutes across four pieces. Start with whichever pathway you intend to build a chain for in chapter 3; if you have no preference, read the coup piece first — it is the longest and the one most likely to change what you think the technical stack is for.</p>
@@ -88,6 +95,7 @@
   <div class="callout">Next: <a class="lnk" href="../unit5/ch3.html">Break the kill chain</a> · Back to the <a class="lnk" href="../index.html#u5">map</a>.</div>
 </main>
 <footer>Original explanation of BlueDot Impact's Technical AI Safety course, unit 5 chapter 2. Course text © BlueDot Impact; this page links, it does not copy.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>

@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -23,7 +25,7 @@
 
   <div class="tldr"><b>TL;DR —</b> Chapters 6.5 and 6.6 assume you want to be an alignment researcher or a policy analyst; this one is for everyone who sorts into neither. It names two programs that select on <em>transfer</em> rather than on prior AI-safety credentials — Tarbell, which turns working journalists into AI reporters and places them in real newsrooms, and the Principles of Intelligence (formerly PIBBSS) Fellowship, which pays neuroscientists, physicists, ecologists and economists to spend three months aiming their own field's tools at AI safety — plus 80,000 Hours' longlist of 200+ fellowships for when neither fits. The thing to remember: an unusual background is an <em>advantage</em> at these programs and a liability at the mainstream ones, so route accordingly. The binding constraint is almost always a once-a-year deadline you missed by two weeks.</div>
 
-  <p class="lead">Unit 6 is a funnel, and by chapter 7 it has already sorted most readers — chapter 5 to MATS, ARENA and the lab residencies, chapter 6 to the policy fellowships. This chapter exists because that sort is lossy: the ecosystem needs reporters who can read a model card, epidemiologists who understand what a capability evaluation is, and control theorists who have never opened a transformer implementation but know a great deal about feedback under uncertainty. The course's answer to "what if I'm one of those people?" is short, and correctly so — the value here is three links, not an argument.</p>
+  <p class="lead">Unit 6 is a funnel, and by chapter 7 it has already sorted most readers — chapter 5 to MATS, ARENA and the lab residencies, chapter 6 to the policy fellowships. This chapter exists because that sort is lossy: the ecosystem needs reporters who can read a <span class="term" data-term="system-card">model card</span>, epidemiologists who understand what a capability evaluation is, and control theorists who have never opened a transformer implementation but know a great deal about feedback under uncertainty. The course's answer to "what if I'm one of those people?" is short, and correctly so — the value here is three links, not an argument.</p>
 
   <h2 id="other-real-category">Why "other" is a real category and not a leftovers bin</h2>
   <p>Mainstream AI-safety fellowships select on <em>proximity</em>: how close are you already to doing the work — your GitHub, your ML coursework, your prior interp paper. That filter is efficient, and it systematically rejects the person whose contribution would be largest precisely because it is orthogonal. A macroeconomist who has spent a decade modelling principal-agent problems has something to say about gradual disempowerment that no amount of PyTorch fluency substitutes for.</p>
@@ -39,11 +41,16 @@
   <p>The <a href="https://princint.ai/programs/fellowship/" target="_blank" rel="noopener">Principles of Intelligence Fellowship</a> — the organisation renamed from PIBBSS, and <span class="mono">pibbss.ai</span> now redirects to <span class="mono">princint.ai</span> — pairs researchers from adjacent disciplines with AI-safety mentors for roughly three months of full-time work on a project that bridges the two.</p>
   <blockquote class="q"><span>"A PhD is not required, but we are looking for something like PhD-level research ability or equivalent independent work experience."</span><span class="cite">— <a href="https://princint.ai/programs/fellowship/" target="_blank" rel="noopener">PIBBSS Fellowship</a>, Principles of Intelligence (2026)</span></blockquote>
   <p>Fields it explicitly welcomes: mathematics, neuroscience, philosophy, physics, political science, ecology. Cohorts are small (~20), the stipend is $3,000/month with accommodation, meals and a return flight covered, and the programme is built around retreats, a shared office, dedicated mentoring and a closing symposium. Alumni have landed at Anthropic, Google, Oxford, Harvard and the UK AI Safety Institute.</p>
-  <div class="callout"><b>The course text is stale here — check the live page.</b> BlueDot describes this as a "3-month summer programme with retreats in London or The Bay" with tracks in Cooperative AI and Gradual Disempowerment. As of the current cycle it runs <b>November 2026 – February 2027, primarily in person in Cape Town</b>, with four tracks: Gradual Disempowerment, ASI Safety via AIXI, Safe Pareto Improvement, and Corrigibility. The 2026–27 deadline was 20 July 2026. Treat every date and location in unit 6 as a pointer, not a fact — verify at the source before you plan around it.</div>
+  <div class="callout"><b>The course text is stale here — check the live page.</b> BlueDot describes this as a "3-month summer programme with retreats in London or The Bay" with tracks in Cooperative AI and Gradual Disempowerment. As of the current cycle it runs <b>November 2026 – February 2027, primarily in person in Cape Town</b>, with four tracks: Gradual Disempowerment, ASI Safety via AIXI, Safe Pareto Improvement, and <span class="term" data-term="corrigibility">Corrigibility</span>. The 2026–27 deadline was 20 July 2026. Treat every date and location in unit 6 as a pointer, not a fact — verify at the source before you plan around it.</div>
 
   <h2 id="when-neither-fits">When neither fits: search the longlist properly</h2>
   <p>The third resource is 80,000 Hours' <a href="https://airtable.com/app53PsYpHxJW61l3/shrQSYXSW9z96y5WE/tbls2B9CeeFfavLXo" target="_blank" rel="noopener">Fellowships Longlist</a>, an Airtable of 200+ programs. A database that size is only useful if you query it rather than read it, and the query that matters is not "AI safety" — it is your own field's name crossed with the calendar. Filter for programs that take your discipline, sort by deadline, and put every deadline in the next twelve months into a calendar with a four-week lead reminder. Almost every fellowship in this space is annual; missing one costs a year, and there is no waitlist.</p>
   <p>The chapter also gestures at biosecurity as an adjacent problem without linking a program for it. That gap is worth filling yourself — the same "transfer" logic applies to pandemic preparedness, and BlueDot runs <a href="https://bluedot.org/courses" target="_blank" rel="noopener">its own biosecurity course</a> as an entry point.</p>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 
   <h2 id="readings">Readings, linked</h2>
   <p>The course sets no time budget for this chapter — all three items are pages to skim, not papers to study. Read whichever of the first two matches your background; if neither does, go straight to the longlist.</p>
@@ -71,6 +78,7 @@
   <div class="callout">Next: <a class="lnk" href="../unit6/ch8.html">Next steps: Programs</a> · Back to the <a class="lnk" href="../index.html#u6">map</a>.</div>
 </main>
 <footer>Original explanation of BlueDot Impact's Technical AI Safety course, unit 6 chapter 7. Course text © BlueDot Impact; this page links, it does not copy.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>

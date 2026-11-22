@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -21,7 +23,7 @@
   <div class="authors">BlueDot Impact · Technical AI Safety · unit 2, chapter 2</div>
   <div class="paperlink" style="border-left-color:var(--off)"><span class="lbl">Course page</span><a href="https://bluedot.org/courses/technical-ai-safety/2/2" target="_blank" rel="noopener">Feeding AI ‘good’ data — BlueDot ↗</a></div>
 
-  <div class="tldr"><b>TL;DR —</b> The cheapest safety intervention available is refusing to show the model something in the first place, and it works better than its reputation: filtering bioweapons-adjacent text out of pretraining produces safeguards that survive 10,000 steps of adversarial fine-tuning, at under 1% extra compute and no hit to general benchmarks — more than can be said for refusal training, which an attacker strips in an afternoon. But it is a layer, not a solution. It cannot separate dual-use knowledge from harmful application, because the harm lives in the user's intent rather than in the document; and ~250 malicious documents backdoor a model regardless of size, so a filter needs near-perfect recall against an adversary who need only slip a rounding error past it. <b>Filtering constrains what a model has memorised, not what it can infer, and not what someone deliberately planted.</b></div>
+  <div class="tldr"><b>TL;DR —</b> The cheapest safety intervention available is refusing to show the model something in the first place, and it works better than its reputation: filtering bioweapons-adjacent text out of pretraining produces safeguards that survive 10,000 steps of adversarial <span class="term" data-term="fine-tuning">fine-tuning</span>, at under 1% extra compute and no hit to general benchmarks — more than can be said for refusal training, which an attacker strips in an afternoon. But it is a layer, not a solution. It cannot separate dual-use knowledge from harmful application, because the harm lives in the user's intent rather than in the document; and ~250 malicious documents backdoor a model regardless of size, so a filter needs near-perfect recall against an adversary who need only slip a rounding error past it. <b>Filtering constrains what a model has memorised, not what it can infer, and not what someone deliberately planted.</b></div>
 
   <p class="lead">Unit 2 walks the training-time levers roughly in the order they apply, and this is the earliest: before any objective is chosen or any human rates any output, someone decides which documents the model will ever see. The chapter tests the field's most intuitive safety proposal — "just don't train it on the bad stuff" — against what the 2025 experimental literature found. The answer is more interesting than either camp predicted: real, measurable, unusually durable, and nowhere near sufficient.</p>
 
@@ -30,21 +32,21 @@
   <ul>
     <li><b>Capability denial.</b> Strip documents teaching a specific hazardous skill — pathogen synthesis, exploit development — on the theory that a model cannot recite what it never read. This is the bet with the strongest experimental support.</li>
     <li><b>Behaviour shaping.</b> Strip or rebalance text modelling the <em>disposition</em> you don't want: abuse, manipulation, deceptive reasoning traces. Closer to curation than removal, and it shades into synthetic data — writing the corpus you wish existed rather than subtracting from the real one.</li>
-    <li><b>Poisoning defence.</b> Detect and drop documents an adversary planted to install a backdoor. This is not really filtering at all; it is adversarial detection, and it plays by adversarial rules.</li>
+    <li><b><span class="term" data-term="data-poisoning">Poisoning</span> defence.</b> Detect and drop documents an adversary planted to install a backdoor. This is not really filtering at all; it is adversarial detection, and it plays by adversarial rules.</li>
   </ul>
   <p>They fail differently — knowledge structure bounds the first, base rates bound the third — and collapsing them into one technique is how you end up with the startup pitch in exercise 2.</p>
 
   <h2 id="tamper-resistance-argument">The tamper-resistance argument</h2>
   <p>The strongest case for filtering is not that it removes more capability than other methods. It is that what it removes <em>stays</em> removed.</p>
-  <p>Contrast the default. Refusal training — RLHF, safety fine-tuning, whatever the lab calls it — leaves hazardous knowledge intact in the weights and adds a learned policy of declining to emit it. That policy is a thin, late-stage layer over a large pretrained substrate, and about as robust as you'd expect: anyone with the weights and a modest GPU budget fine-tunes it off in a few hundred steps on innocuous examples. For open-weight releases, the safety property you shipped is not the one the downstream user runs.</p>
+  <p>Contrast the default. Refusal training — <span class="term" data-term="rlhf">RLHF</span>, safety fine-tuning, whatever the lab calls it — leaves hazardous knowledge intact in the weights and adds a learned policy of declining to emit it. That policy is a thin, late-stage layer over a large pretrained substrate, and about as robust as you'd expect: anyone with the weights and a modest GPU budget fine-tunes it off in a few hundred steps on innocuous examples. For <span class="term" data-term="open-weights">open-weight</span> releases, the safety property you shipped is not the one the downstream user runs.</p>
   <p><a class="lnk" href="https://deepignorance.ai/" target="_blank" rel="noopener">Deep Ignorance</a> (UK AISI and EleutherAI) tested the alternative by pretraining 6.9B-parameter models from scratch on corpora with biorisk content removed — a blocklist pass dropping about 8.4% of the data, then a fine-tuned classifier pass. The filtered models scored near chance on biorisk evaluations while holding general benchmarks, at under 1% additional training FLOPs. The headline is adversarial: the researchers then attacked their own models with up to 10,000 fine-tuning steps on 300M tokens of exactly the data they had filtered out, and the models stayed well below the unfiltered baseline. You can teach a filtered model some of what it missed, but you pay full price and never get back to the unfiltered starting point.</p>
   <p>That asymmetry is the real product. Filtering converts a safety property from "the model has been persuaded not to" into "the model has less to work with", and only the second kind survives contact with someone who controls the weights.</p>
   <p>The paper is honest about the ceiling: staged attacks combining fine-tuning with in-context retrieval — hand the hazardous material to the model at inference time and let it reason — defeated every defence tested, filtering included. A model that lacks knowledge can still be given it.</p>
 
   <h2 id="33-actually-buys">What "33%" actually buys you</h2>
-  <p>Anthropic's <a class="lnk" href="https://alignment.anthropic.com/2025/pretraining-data-filtering/" target="_blank" rel="noopener">pretraining data filtering</a> work is the industrial-scale version of the same experiment, and it rewards reading the numbers rather than the summary. They built classifiers to flag CBRN content, trained a "constitutional" variant to F1 ≈ 0.94–0.96, filtered a pretraining corpus, and measured the resulting model on hazardous-knowledge and ordinary benchmarks.</p>
+  <p>Anthropic's <a class="lnk" href="https://alignment.anthropic.com/2025/pretraining-data-filtering/" target="_blank" rel="noopener">pretraining data filtering</a> work is the industrial-scale version of the same experiment, and it rewards reading the numbers rather than the summary. They built classifiers to flag <span class="term" data-term="cbrn">CBRN</span> content, trained a "constitutional" variant to F1 ≈ 0.94–0.96, filtered a pretraining corpus, and measured the resulting model on hazardous-knowledge and ordinary benchmarks.</p>
   <p>The reported effect is a 33% relative reduction in harmful capability <em>measured against the random-chance baseline</em>: accuracy on the hazardous evaluation moved from 33.7% to 30.8%. On a multiple-choice benchmark where guessing scores around 25%, that is roughly three absolute points — about a third of the model's above-chance margin. MMLU natural science, prose and code were unaffected.</p>
-  <p>Read carelessly, "33% reduction in dangerous capabilities" sounds like a third of the risk is gone. Read carefully, it says something more modest and more useful: <b>the filter is cheap, measurable, and costs nothing in general capability</b> — an excellent property for a defence-in-depth layer and a terrible one for a load-bearing layer. Note also how much work the evaluation does: a benchmark where the unfiltered model barely clears chance cannot show a large effect no matter how good the filter is. That is the general problem with measuring dangerous capabilities before they exist at scale.</p>
+  <p>Read carelessly, "33% reduction in dangerous capabilities" sounds like a third of the risk is gone. Read carefully, it says something more modest and more useful: <b>the filter is cheap, measurable, and costs nothing in general capability</b> — an excellent property for a <span class="term" data-term="defense-in-depth">defence-in-depth</span> layer and a terrible one for a load-bearing layer. Note also how much work the evaluation does: a benchmark where the unfiltered model barely clears chance cannot show a large effect no matter how good the filter is. That is the general problem with measuring dangerous capabilities before they exist at scale.</p>
 
   <h2 id="dual-use-boundary">Dual use is a boundary problem, not a labelling problem</h2>
   <p>The obvious objection to capability denial is that hazardous knowledge does not come in a separate box.</p>
@@ -64,6 +66,11 @@
 
   <h2 id="where-leaves-defence">Where this leaves the defence</h2>
   <p>It matters most at open-weight release. Retain the weights and you can put safeguards at the API boundary and revoke access from abusers; a strippable refusal policy is a survivable problem. Release the weights and every safeguard above the pretraining layer is negotiable — what remains is what the model was never taught. A narrow guarantee, and the only one that ships with the file.</p>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 
   <h2 id="readings">Readings, linked</h2>
   <p>The course budgets 35 minutes across four resources. Start with the BlueDot explainer for the framing, then read Deep Ignorance — it is the load-bearing result and everything else calibrates against it.</p>
@@ -91,6 +98,7 @@
   <div class="callout">Next: <a class="lnk" href="../unit2/ch3.html">Teaching AI right from wrong</a> · Back to the <a class="lnk" href="../index.html#u2">map</a>.</div>
 </main>
 <footer>Original explanation of BlueDot Impact's Technical AI Safety course, unit 2 chapter 2. Course text © BlueDot Impact; this page links, it does not copy.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>

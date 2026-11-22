@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -21,9 +23,9 @@
   <div class="authors">BlueDot Impact · Technical AI Safety · unit 1, chapter 1</div>
   <div class="paperlink" style="border-left-color:var(--off)"><span class="lbl">Course page</span><a href="https://bluedot.org/courses/technical-ai-safety/1/1" target="_blank" rel="noopener">Making AI go well — BlueDot ↗</a></div>
 
-  <div class="tldr"><b>TL;DR —</b> The hinge between BlueDot's strategy course and its technical one. Strategy asks which futures we want and which plans could get there; this course asks what those plans quietly assume — what are these systems made of, and which safety properties can we actually engineer into them? It fixes the scope (training, evaluation, interpretability, containment), names four exclusions, and previews the output: a kill chain and a one-page fundable plan. Remember: every safety <em>plan</em> bottoms out in a <em>technique</em>, and techniques have failure modes plans do not mention.</div>
+  <div class="tldr"><b>TL;DR —</b> The hinge between BlueDot's strategy course and its technical one. Strategy asks which futures we want and which plans could get there; this course asks what those plans quietly assume — what are these systems made of, and which safety properties can we actually engineer into them? It fixes the scope (training, evaluation, interpretability, containment), names four exclusions, and previews the output: a <span class="term" data-term="kill-chain">kill chain</span> and a one-page fundable plan. Remember: every safety <em>plan</em> bottoms out in a <em>technique</em>, and techniques have failure modes plans do not mention.</div>
 
-  <p class="lead">Strategy documents about advanced AI share a soft spot. They describe a target state — "stays under human control", "refuses to help with a bioweapon", "we can tell whether it is scheming" — and move on, as if that were a configuration setting rather than an open research problem. This chapter announces the course is going to look under that assumption. It teaches nothing technical yet; it sets the terms of a four-unit argument about what today's techniques can and cannot deliver.</p>
+  <p class="lead">Strategy documents about advanced AI share a soft spot. They describe a target state — "stays under human control", "refuses to help with a bioweapon", "we can tell whether it is <span class="term" data-term="deceptive-alignment">scheming</span>" — and move on, as if that were a configuration setting rather than an open research problem. This chapter announces the course is going to look under that assumption. It teaches nothing technical yet; it sets the terms of a four-unit argument about what today's techniques can and cannot deliver.</p>
 
   <h2 id="two-questions-sound">Two questions that sound like one</h2>
   <p>"How do we make AI go well?" is what the <a class="lnk" href="https://bluedot.org/courses/agi-strategy" target="_blank" rel="noopener">AGI strategy course</a> answers, in the currency of actors and incentives: who holds the compute, which threat pathways are live, which plan you are betting on. That yields claims like "build defences and diffuse AI" or "hand control to an aligned superintelligence." Both are coherent. Neither tells you how to build a defence or verify an alignment.</p>
@@ -41,13 +43,18 @@
   <h2 id="four-exclusions">The four exclusions</h2>
   <p>The chapter is explicit about what it will not cover. Each cut is defensible; three leak:</p>
   <ul>
-    <li><b>Policy detail</b> — deferred to a separate course, on the theory that the substrate comes first. But a threshold in a frontier safety framework is a technical claim in legal clothes.</li>
+    <li><b>Policy detail</b> — deferred to a separate course, on the theory that the substrate comes first. But a threshold in a <span class="term" data-term="frontier-safety-framework">frontier safety framework</span> is a technical claim in legal clothes.</li>
     <li><b>Compute governance</b> — the cleanest cut: a supply-chain and mechanism-design problem, not a model-behaviour one.</li>
-    <li><b>AI security</b> — weight theft and self-exfiltration. Load-bearing: every deployment-time mitigation in unit 5 assumes the weights stayed where you put them.</li>
+    <li><b>AI security</b> — weight theft and self-<span class="term" data-term="exfiltration">exfiltration</span>. Load-bearing: every deployment-time mitigation in unit 5 assumes the weights stayed where you put them.</li>
     <li><b>ML fundamentals</b> — assumed, not taught. If backprop, tokenisation, pretraining versus post-training and RL "policy" are not comfortable, do BlueDot's <a class="lnk" href="https://bluedot-impact.notion.site/AI-Foundations-293f8e69035380f29863c4c92c41fac7?pvs=74" target="_blank" rel="noopener">AI foundations</a> modules first; unit 4 is unreadable without them.</li>
   </ul>
 
   <div class="callout off">What to carry out of an orientation chapter: for every technique the course introduces, write the one sentence saying what would have to be true about the model for it to <em>stop</em> working. It is almost always "the model is capable enough to notice it is being trained, tested or watched." The techniques differ; the sentence recurs — noticing that is most of what unit 1 installs.</div>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 
   <h2 id="readings">Readings, linked</h2>
   <p>This chapter has no Resources block and no assigned reading time — it is a two-screen orientation page plus a short video. What it does carry is a set of back-links into the strategy course and one prerequisite; start with the video, and only detour into the strategy chapters if the "defence in depth" framing is new to you.</p>
@@ -80,6 +87,7 @@
   <div class="callout">Next: <a class="lnk" href="../unit1/ch2.html">What might success look like?</a> · Back to the <a class="lnk" href="../index.html#u1">map</a>.</div>
 </main>
 <footer>Original explanation of BlueDot Impact's Technical AI Safety course, unit 1 chapter 1. Course text © BlueDot Impact; this page links, it does not copy.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>

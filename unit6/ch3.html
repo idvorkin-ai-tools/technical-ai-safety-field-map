@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -37,7 +39,7 @@
   <p><b>Engagement with AI safety</b> — courses, reading groups, hackathons, blog posts, whatever you have committed to next. This slot exists because in a field where most applicants have no in-field employment, demonstrated voluntary engagement is the cheapest available signal that you will still be here in a year.</p>
 
   <h2 id="positioning-competing-ladder">Positioning: you are not competing on one ladder</h2>
-  <p>The reason the course pairs this exercise with John Wentworth's Pareto-frontier post is that most career anxiety assumes a single ranking — that there is one queue of "AI safety researchers" and your job is to climb it. That model is both discouraging and wrong. The useful question is not "am I in the top N at machine learning" but "is there a pair or triple of things where nobody is better than me at all of them simultaneously". Distributed-systems reliability crossed with eval design. Wet-lab biology crossed with red-teaming. Compiler work crossed with interpretability tooling. These intersections are underpopulated because nobody optimises for them deliberately.</p>
+  <p>The reason the course pairs this exercise with John Wentworth's Pareto-frontier post is that most career anxiety assumes a single ranking — that there is one queue of "AI safety researchers" and your job is to climb it. That model is both discouraging and wrong. The useful question is not "am I in the top N at machine learning" but "is there a pair or triple of things where nobody is better than me at all of them simultaneously". Distributed-systems reliability crossed with eval design. Wet-lab biology crossed with <span class="term" data-term="red-teaming">red-teaming</span>. Compiler work crossed with interpretability tooling. These intersections are underpopulated because nobody optimises for them deliberately.</p>
   <blockquote class="q"><span>"Thanks to the 'curse' of dimensionality, these goldmines are not in any danger of exhausting."</span><span class="cite">— <a href="https://www.lesswrong.com/posts/XvN2QQpKTuEzgkZHY/being-the-pareto-best-in-the-world" target="_blank" rel="noopener">Being the (Pareto) Best in the World</a>, John Wentworth (2019)</span></blockquote>
   <p>Concretely: when you write the focus paragraph, write the intersection, not the field. "Systems engineer moving into agent-safety evaluation, with ten years of production incident response" is a sentence only a few hundred people on earth can write. "Interested in AI alignment" is a sentence a hundred thousand people can write, and it therefore transmits no information at all.</p>
 
@@ -48,6 +50,11 @@
   <p>The common thread across all five: every one of them tells you to produce something public. That is not a coincidence. In a field with no standard credential, the artifact <em>is</em> the credential — and the 1-pager is just the index page pointing at your artifacts.</p>
 
   <div class="callout">The one thing to carry away: write it in an hour and send it to someone the same day. The 1-pager's value is almost entirely in the feedback loop it opens — a cohort-mate saying "your focus paragraph doesn't tell me what you'd do on Monday" is worth more than three more hours of solo polishing. Version it, and rewrite it after every project you finish.</div>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 
   <h2 id="readings">Readings, linked</h2>
   <p>The course budgets one hour, and all of it is meant to go into writing — only the 1-pager template is required, everything below it is optional. Read the template first, draft against it, and pull in whichever of the optional pieces matches the slot you struggled with. If you want just one, make it the Rogers-Smith careers guide (long, but the most action-guiding).</p>
@@ -101,6 +108,7 @@
   <div class="callout">Next: <a class="lnk" href="../unit6/ch4.html">Next steps: Apply to roles</a> · Back to the <a class="lnk" href="../index.html#u6">map</a>.</div>
 </main>
 <footer>Original explanation of BlueDot Impact's Technical AI Safety course, unit 6 chapter 3. Course text © BlueDot Impact; this page links, it does not copy.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>

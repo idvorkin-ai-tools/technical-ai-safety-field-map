@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -38,12 +40,17 @@
   <p><strong>5. Prefer galaxy-brain-resistant plans.</strong> The sharpest of the five. Long inferential chains concluding "and therefore the highest-impact thing happens to be the thing I already wanted to do" are evidence about the reasoner, not the world; the chapter's canonical example is joining a capabilities team to influence it from inside, an argument constructible for almost any position. Ask whether you could derive the opposite conclusion from equally plausible steps. If yes, you have a rationalisation, not a strategy. <em>Where it breaks:</em> pushed too far it argues against all non-obvious action — the test is whether the reasoning is <em>load-bearing and unfalsifiable</em>, not whether it is unusual.</p>
 
   <h2 id="three-doors-plus">Three doors, plus the one the chapter adds at the end</h2>
-  <p><strong>Research</strong> produces new knowledge about model behaviour: training models, running experiments, or importing structure from other fields — <em>model organisms</em> is a biology idea, <em>red-teaming</em> a security one. Deep ML fluency helps enormously; a non-ML background is not disqualifying if it gives you a niche.</p>
+  <p><strong>Research</strong> produces new knowledge about model behaviour: training models, running experiments, or importing structure from other fields — <em><span class="term" data-term="model-organism">model organisms</span></em> is a biology idea, <em><span class="term" data-term="red-teaming">red-teaming</span></em> a security one. Deep ML fluency helps enormously; a non-ML background is not disqualifying if it gives you a niche.</p>
   <p><strong>Engineering</strong> builds the infrastructure that lets researchers run experiments at all: eval harnesses, auditing tools, sandboxes, data pipelines. It is undersold relative to its leverage — one good framework multiplies every researcher who adopts it, and "evals research" in practice is mostly engineering and operations. If you already ship software, this is the shortest path from your current skills to real contribution. <strong>Founding</strong> starts the thing when no existing org will house it. Highest variance, and the door where agency substitutes most directly for credentials.</p>
   <div class="callout">The chapter's closing move is the one most readers skip and shouldn't: research organisations are not made of researchers. They run on operations staff, research managers, recruiters, designers, product people and domain experts, and those roles are as understaffed as the technical ones. "I am not going to out-compete a PhD at interpretability" is not a reason to leave the field — it is a reason to read the org chart.</div>
 
   <h2 id="boundary-chapter-draws">The boundary the chapter draws</h2>
   <p>The final note is honest about a limit of the whole course: technical safety work is <em>necessary but not sufficient</em>. A perfect alignment technique only helps if developers are made to use it (governance), if the weights are not stolen (AI security), and if leaked harms hit a society with defences (biosecurity, cybersecurity). Read it as a warning against treating your chosen technique as the whole solution — not as a reason to abandon technical work.</p>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 
   <h2 id="readings">Readings, linked</h2>
   <p>This chapter assigns no formal reading block; these are the essays it cites inline as the source of its advice. If you read one, read the 80,000 Hours career review — it is the widest survey. If you are choosing between "go independent" and "get mentorship", read Hobbhahn.</p>
@@ -125,6 +132,7 @@
   <div class="callout">Next: <a class="lnk" href="../unit6/ch2.html">Choose your focus</a> · Back to the <a class="lnk" href="../index.html#u6">map</a>.</div>
 </main>
 <footer>Original explanation of BlueDot Impact's Technical AI Safety course, unit 6 chapter 1. Course text © BlueDot Impact; this page links, it does not copy.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>

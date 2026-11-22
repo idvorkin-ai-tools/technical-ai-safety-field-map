@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -23,7 +25,7 @@
 
   <div class="tldr"><b>TL;DR —</b> If the lever you want to pull is regulation rather than a loss function, the standard on-ramp is a stipended three-to-six-month fellowship that puts you in the rooms where things get decided. The course names five: GovAI (research, London/DC), IAPS (US and compute policy, DC-or-remote), Horizon (a real placement into the US executive branch or Congress), Talos (the Brussels equivalent), and BlueDot's governance course as the zero-cost first step. The binding constraint is not your ML background — it is citizenship, work authorisation, and clearance eligibility. Sort by jurisdiction first, topic second.</div>
 
-  <p class="lead">Unit 6 has spent five chapters assuming you will contribute by building something — an eval, an interp result, a red-team finding. But much of what determines whether frontier systems ship safely is decided by people writing rules rather than code, and those rooms are short of anyone who can read a model card without a translator. What follows is a directory, not an argument: six routes into a policy career that will take you seriously <em>because</em> of the technical work, not in spite of it.</p>
+  <p class="lead">Unit 6 has spent five chapters assuming you will contribute by building something — an eval, an interp result, a <span class="term" data-term="red-teaming">red-team</span> finding. But much of what determines whether frontier systems ship safely is decided by people writing rules rather than code, and those rooms are short of anyone who can read a <span class="term" data-term="system-card">model card</span> without a translator. What follows is a directory, not an argument: six routes into a policy career that will take you seriously <em>because</em> of the technical work, not in spite of it.</p>
 
   <h2 id="technical-background-asset">Why the technical background is the asset, not the detour</h2>
   <p>Policy questions are usually empirical underneath. Does a compute threshold at 10<sup>26</sup> FLOP still catch the systems we care about? Is a reported eval result a measurement or a marketing artifact? Can a safety commitment be verified from outside the lab? A generalist analyst learns to ask those; someone who has trained a model and written an eval harness can answer them, and can tell a real technical objection from a rhetorical one. The catch is that the output format is memos with a recommendation on top — so these programs are largely a supervised environment for turning engineering fluency into writing.</p>
@@ -48,7 +50,12 @@
   <h2 id="timing-quietly-disqualifies">Timing quietly disqualifies people too</h2>
   <p>These run annual or semi-annual cycles with long lead times — several close nearly a year before the work starts. Horizon's 2027 cohort closed in August 2026, selected late 2026, training from January 2027: eighteen months from "I should look into this" to a paycheck. Talos runs spring and autumn cohorts; GovAI's winter fellowships close the preceding autumn. Reading this in the wrong month, the plan is: governance course now, one published piece of writing, apply next cycle with something to point at.</p>
 
-  <div class="callout">The one thing to carry away: <b>write one public, technically-grounded policy artifact before you apply.</b> A 1,500-word memo taking a concrete position — why a compute threshold is or isn't the right trigger, what a third party would need to verify a safety case, where an eval standard measures the wrong thing — does more than another line of ML experience. It is direct evidence of the skill these programs select for, and the cheapest test of whether you enjoy the work.</div>
+  <div class="callout">The one thing to carry away: <b>write one public, technically-grounded policy artifact before you apply.</b> A 1,500-word memo taking a concrete position — why a compute threshold is or isn't the right trigger, what a third party would need to verify a <span class="term" data-term="safety-case">safety case</span>, where an eval standard measures the wrong thing — does more than another line of ML experience. It is direct evidence of the skill these programs select for, and the cheapest test of whether you enjoy the work.</div>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 
   <h2 id="readings">Readings, linked</h2>
   <p>The course gives no time budget here — this is a directory chapter, and the intended time cost is however long it takes to shortlist. Start with the BlueDot governance course if you are undecided, and with the fellowship matching your jurisdiction if you are not.</p>
@@ -80,6 +87,7 @@
   <div class="callout">Next: <a class="lnk" href="../unit6/ch7.html">Next steps: Other fellowships</a> · Back to the <a class="lnk" href="../index.html#u6">map</a>.</div>
 </main>
 <footer>Original explanation of BlueDot Impact's Technical AI Safety course, unit 6 chapter 6. Course text © BlueDot Impact; this page links, it does not copy.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>

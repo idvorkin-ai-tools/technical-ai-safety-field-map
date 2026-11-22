@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -21,7 +23,7 @@
   <div class="authors">BlueDot Impact · Technical AI Safety · unit 3, chapter 5</div>
   <div class="paperlink" style="border-left-color:var(--def)"><span class="lbl">Course page</span><a href="https://bluedot.org/courses/technical-ai-safety/3/5" target="_blank" rel="noopener">Option 3: Google DeepMind — BlueDot ↗</a></div>
 
-  <div class="tldr"><b>TL;DR —</b> One of four lab-specific deep dives: pick a lab, audit its safety framework against five questions. DeepMind's answer is the <b>Frontier Safety Framework</b>, built on <b>Critical Capability Levels</b> — named thresholds in CBRN, cyber, harmful manipulation, and ML R&amp;D/misalignment, each with a recommended security level and a mitigation process. The machinery that does the work sits a layer below: <i>alert thresholds</i> that fire early, <i>early warning evaluations</i> that measure proximity, a <i>safety case</i> owed before a model at a CCL ships. It is specific about detection and vague about consequence: "pause" does not appear in it, and the body that signs off is named only as "the appropriate governance function."</div>
+  <div class="tldr"><b>TL;DR —</b> One of four lab-specific deep dives: pick a lab, audit its safety framework against five questions. DeepMind's answer is the <b><span class="term" data-term="frontier-safety-framework">Frontier Safety Framework</span></b>, built on <b><span class="term" data-term="capability-threshold">Critical Capability Levels</span></b> — named thresholds in <span class="term" data-term="cbrn">CBRN</span>, cyber, harmful manipulation, and ML R&amp;D/misalignment, each with a recommended security level and a mitigation process. The machinery that does the work sits a layer below: <i>alert thresholds</i> that fire early, <i>early warning evaluations</i> that measure proximity, a <i><span class="term" data-term="safety-case">safety case</span></i> owed before a model at a CCL ships. It is specific about detection and vague about consequence: "pause" does not appear in it, and the body that signs off is named only as "the appropriate governance function."</div>
 
   <p class="lead">Chapter 3.2 argued that frontier safety frameworks are a genre: every major lab publishes one promising to measure dangerous capability, tie mitigations to thresholds, and stop if the mitigations are not ready. Chapters 3.3–3.6 are where the genre meets specific text. Reading one closely beats skimming four: the differences live in whether a threshold is defined by an observable, whether a mitigation is a commitment or a recommendation, and whether anyone outside the company can check.</p>
 
@@ -36,18 +38,18 @@
 
   <h2 id="four-domains-each">Four domains, and what each one recommends</h2>
   <ul>
-    <li><b>CBRN uplift level 1</b> — uplift to low-to-medium-resourced actors in reference scenarios, at severe scale. Recommended <b>Security Level 2+</b>; a CBRN TCL sits below it.</li>
-    <li><b>Cyber uplift level 1</b> — sufficient uplift on high-impact attacks for severe-scale harm. <b>SL2+</b>, reasoning that automated cyber-defence and social adaptation blunt the exfiltration case.</li>
+    <li><b>CBRN <span class="term" data-term="uplift">uplift</span> level 1</b> — uplift to low-to-medium-resourced actors in reference scenarios, at severe scale. Recommended <b>Security Level 2+</b>; a CBRN TCL sits below it.</li>
+    <li><b>Cyber uplift level 1</b> — sufficient uplift on high-impact attacks for severe-scale harm. <b>SL2+</b>, reasoning that automated cyber-defence and social adaptation blunt the <span class="term" data-term="exfiltration">exfiltration</span> case.</li>
     <li><b>Harmful manipulation level 1 (exploratory)</b> — enough to systematically and substantially shift beliefs and behaviour in identified high-stakes contexts over the course of interaction. <b>SL2+</b>; DeepMind labels the domain exploratory and its research base nascent.</li>
     <li><b>ML R&amp;D acceleration level 1</b> (AI progress substantially above historical rates) — <b>SL3</b>; <b>ML R&amp;D automation level 1</b> (fully automates any Google team working on AI capabilities, at comparable all-in cost) — <b>SL4</b>, and only if the whole field adopts it.</li>
   </ul>
   <p>Those levels are aligned to RAND's <a class="lnk" href="https://www.rand.org/pubs/research_reports/RRA2849-1.html" target="_blank" rel="noopener">Securing AI Model Weights</a>, which grades weight-theft resistance from amateurs to top-tier state operations. DeepMind's addition is <b>SL2+</b>: RAND SL2 plus insider-threat controls — insider risk teams, background checks, training-data tamper review, sandboxed untrusted input, APT-simulating red teams, 24/7 threat hunting. Notice the implication: every misuse CCL recommends a level explicitly scoped <i>below</i> resisting a well-resourced state actor. Argued for in the same table as the threshold — but still a trade your audit should surface.</p>
 
   <h2 id="crossed-threshold-actually">What a crossed threshold actually triggers</h2>
-  <p>Two mitigation families on different logic. <b>Security mitigations</b> protect the weights, because exfiltrated weights can have their safeguards trained back out; these are the RAND-aligned levels. <b>Deployment mitigations</b> — safety post-training, input/output and chain-of-thought monitoring, jailbreak detection, account moderation, user verification, bug bounties — counter misuse or misaligned expression in a live deployment. That side is deliberately not a fixed list, since you cannot pre-specify defences for capabilities that do not exist yet; 3.1 gives a <i>process</i>: build safeguards, red-team their robustness, produce a residual risk assessment, and — if a CCL rather than merely a TCL was reached — add a <b>safety case</b>, an assessable argument that severe risk is now acceptable. Deployment waits on a governance function accepting that risk. One consideration a safety case may lean on is "what capabilities and mitigations are available on other publicly available models" — real counterfactual reasoning, and structurally a race-to-the-bottom clause.</p>
+  <p>Two mitigation families on different logic. <b>Security mitigations</b> protect the weights, because exfiltrated weights can have their safeguards trained back out; these are the RAND-aligned levels. <b>Deployment mitigations</b> — safety post-training, input/output and <span class="term" data-term="chain-of-thought">chain-of-thought</span> monitoring, <span class="term" data-term="jailbreak">jailbreak</span> detection, account moderation, user verification, bug bounties — counter misuse or misaligned expression in a live deployment. That side is deliberately not a fixed list, since you cannot pre-specify defences for capabilities that do not exist yet; 3.1 gives a <i>process</i>: build safeguards, red-team their robustness, produce a residual risk assessment, and — if a CCL rather than merely a TCL was reached — add a <b>safety case</b>, an assessable argument that severe risk is now acceptable. Deployment waits on a governance function accepting that risk. One consideration a safety case may lean on is "what capabilities and mitigations are available on other publicly available models" — real counterfactual reasoning, and structurally a race-to-the-bottom clause.</p>
 
   <h2 id="misalignment-part-still">Misalignment: the part still under construction</h2>
-  <p>Version 3.1 sets a <b>Stealth and Situational Awareness TCL</b>: instrumental reasoning good enough — situational awareness (using details of its own deployment) plus stealth (circumventing basic oversight) — that, absent extra mitigations, undermining human control cannot be ruled out. Above it, DeepMind commits to periodic misalignment risk assessments covering <i>internal</i> high-risk deployments, naming chain-of-thought monitoring as an example safeguard. Two flags: the claim is inability-shaped — "cannot scheme effectively", not "will not" — weaker than a propensity argument and expiring the moment the capability arrives; and the domain has no paired misalignment CCL, so it is handled by assessment rather than a named severe-harm threshold. The eval suite behind the TCL is public — <a class="lnk" href="https://arxiv.org/abs/2505.01420" target="_blank" rel="noopener">Evaluating Frontier Models for Stealth and Situational Awareness</a> (Phuong et al., 2025) — more than most frameworks offer.</p>
+  <p>Version 3.1 sets a <b>Stealth and Situational Awareness TCL</b>: instrumental reasoning good enough — situational awareness (using details of its own deployment) plus stealth (circumventing basic oversight) — that, absent extra mitigations, undermining human control cannot be ruled out. Above it, DeepMind commits to periodic misalignment risk assessments covering <i>internal</i> high-risk deployments, naming chain-of-thought monitoring as an example safeguard. Two flags: the claim is inability-shaped — "cannot scheme effectively", not "will not" — weaker than a <span class="term" data-term="capability-vs-propensity">propensity</span> argument and expiring the moment the capability arrives; and the domain has no paired misalignment CCL, so it is handled by assessment rather than a named severe-harm threshold. The eval suite behind the TCL is public — <a class="lnk" href="https://arxiv.org/abs/2505.01420" target="_blank" rel="noopener">Evaluating Frontier Models for Stealth and Situational Awareness</a> (Phuong et al., 2025) — more than most frameworks offer.</p>
 
   <h2 id="framework-contact-real">The framework in contact with a real model</h2>
     <blockquote class="q"><span>"We ran our full suite of early warning evaluations on Gemini 3 Pro. We found that Gemini 3 Pro did not reach any of our FSF CCLs."</span><span class="cite">— <a href="https://deepmind.google/models/fsf-reports/gemini-3-pro/" target="_blank" rel="noopener">Gemini 3 Pro Frontier Safety Framework Report</a>, Google DeepMind (2025)</span></blockquote>
@@ -64,6 +66,11 @@
     <li><b>Harmful manipulation is self-labelled exploratory.</b> A threshold whose owner says the underlying science is nascent is not a tested tripwire.</li>
   </ul>
   <p>None of this makes the FSF a bad document — it is one of the more precise entries in the genre. The exercise is to separate its commitments from its intentions.</p>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 
   <h2 id="readings">Readings, linked</h2>
   <p>The course budgets 1h for this chapter: 45 minutes reading, 15 minutes writing. Start with the framework itself — but read the <b>current 3.1</b> rather than the 2.0 PDF the course links — then use the Gemini 3 Pro card to see the framework applied.</p>
@@ -92,6 +99,7 @@
   <div class="callout">Next: <a class="lnk" href="../unit3/ch6.html">Option 4: Meta</a> · Back to the <a class="lnk" href="../index.html#u3">map</a>.</div>
 </main>
 <footer>Original explanation of BlueDot Impact's Technical AI Safety course, unit 3 chapter 5. Course text © BlueDot Impact; this page links, it does not copy.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>

@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../paper.css" />
+<script>try{var m=localStorage.getItem('aitools-mode')||localStorage.getItem('llm-judges-mode');if(m==='tech'||m==='eli5')document.documentElement.setAttribute('data-'+m,'on')}catch(e){}</script>
+<style>html:is([data-tech="on"],[data-eli5="on"]) .plain-only,html:not([data-tech="on"]) .tech-only,html:not([data-eli5="on"]) .eli5-only,html[data-tech="on"] .no-tech{display:none!important}</style>
 </head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -23,11 +25,11 @@
 
   <div class="tldr"><b>TL;DR —</b> Units 2–4 tried to make the model trustworthy: train it to be safe, evaluate whether it is dangerous, read its internals. Every one of those techniques has a failure mode, and a model that is actively working against you is exactly the case where they fail together. This chapter flips the assumption: suppose the model <em>is</em> misaligned, or suppose a user has jailbroken it, and ask what you can still guarantee. The answer is a deployment protocol — untrusted model, trusted monitor, a small human audit budget, filters at the boundary — whose safety comes from the arrangement rather than from the model's disposition. The one thing to remember: control buys you safety you can argue for without knowing the model's intentions, and it buys it only up to a capability gap that eventually closes.</div>
 
-  <p class="lead">This is the last technical unit before the course turns to careers, and it exists because the previous three each end in a shrug. Safety training gets you good behaviour on the distribution you trained on. Dangerous-capability evals get you a number a model smart enough to notice the eval can move. Interpretability gets you partial, contested readings of internals that were never designed to be read. None of it is a clean bill of health you can bet a deployment on. So unit 5 stops asking "is this model safe?" and starts asking "what do I build around a model whose safety I cannot establish?" That question has a name — <b>AI control</b> — and unlike most of AI safety it comes with a concrete, quantitative, adversarial methodology.</p>
+  <p class="lead">This is the last technical unit before the course turns to careers, and it exists because the previous three each end in a shrug. Safety training gets you good behaviour on the distribution you trained on. Dangerous-capability evals get you a number a model smart enough to notice the eval can move. Interpretability gets you partial, contested readings of internals that were never designed to be read. None of it is a clean bill of health you can bet a deployment on. So unit 5 stops asking "is this model safe?" and starts asking "what do I build around a model whose safety I cannot establish?" That question has a name — <b><span class="term" data-term="ai-control">AI control</span></b> — and unlike most of AI safety it comes with a concrete, quantitative, adversarial methodology.</p>
 
   <h2 id="assumption-changes-engineering">The assumption that changes the engineering</h2>
 
-  <p>Alignment and control are answers to the same threat but they make opposite bets. Alignment tries to make the model not want to hurt you. Control assumes that bet failed and tries to make the model unable to hurt you anyway. The distinction matters because it changes what a safety argument looks like. An alignment safety case is a claim about a model's dispositions, and dispositions are the hardest thing in the world to verify from the outside. A control safety case is a claim about a protocol: <em>even if this model is scheming, the arrangement of monitors, permissions and audits around it means it cannot get a catastrophic action executed without being caught first.</em> That claim is about an artifact you built and can test, not about a mind you cannot see into.</p>
+  <p>Alignment and control are answers to the same threat but they make opposite bets. Alignment tries to make the model not want to hurt you. Control assumes that bet failed and tries to make the model unable to hurt you anyway. The distinction matters because it changes what a safety argument looks like. An alignment <span class="term" data-term="safety-case">safety case</span> is a claim about a model's dispositions, and dispositions are the hardest thing in the world to verify from the outside. A control safety case is a claim about a protocol: <em>even if this model is <span class="term" data-term="deceptive-alignment">scheming</span>, the arrangement of monitors, permissions and audits around it means it cannot get a catastrophic action executed without being caught first.</em> That claim is about an artifact you built and can test, not about a mind you cannot see into.</p>
 
   <p>That framing hands you a design vocabulary. You do not have one AI; you have a <b>trusted</b> model and an <b>untrusted</b> one. Trusted means weaker and older — capable enough to be useful, not capable enough to run a coherent long-horizon plan against you. Untrusted means the frontier model whose capability is the reason you are deploying anything. Safety then comes from spending the trusted model's cheap, plentiful attention plus a sliver of expensive human attention to constrain what the untrusted one gets through. Every control technique is an arrangement of those three resources.</p>
 
@@ -49,7 +51,7 @@
 
   <h2 id="control-evaluations-red-team">Control evaluations: the red-team/blue-team game</h2>
 
-  <p>Control is unusually tractable because you can measure it. A control evaluation is a two-sided game: the blue team writes the protocol, the red team writes an attack policy for the untrusted model — adversarially, with full knowledge of the protocol. Run both and read off two numbers: <b>safety</b> (how often the attack got through uncaught) and <b>usefulness</b> (how much capability survived). Every protocol is a point on a Pareto curve between the two, so you argue by comparing curves rather than trading intuitions.</p>
+  <p>Control is unusually tractable because you can measure it. A control evaluation is a two-sided game: the blue team writes the protocol, the <span class="term" data-term="red-teaming">red team</span> writes an attack policy for the untrusted model — adversarially, with full knowledge of the protocol. Run both and read off two numbers: <b>safety</b> (how often the attack got through uncaught) and <b>usefulness</b> (how much capability survived). Every protocol is a point on a Pareto curve between the two, so you argue by comparing curves rather than trading intuitions.</p>
 
   <p>This is the rare AI-safety methodology that produces falsifiable numbers about a deceptive model without requiring you to have one: you substitute a red team deliberately playing the misaligned role. That substitution is both the method's strength and its central assumption — the evaluation is only as strong as the red team's ability to think of the attack the real model would think of. Miles's video walks the original Redwood setup (strong model writing backdoored code, weak monitor, 2% audit budget) and is the fastest way to get the game's shape into your head.</p>
 
@@ -59,11 +61,11 @@
 
   <h2 id="filtering-boundary">Filtering at the boundary</h2>
 
-  <p>The chapter's other half is the misuse case rather than the scheming case: the model is not the adversary, the user is. Safety training already refuses obvious requests, but jailbreaks — role-play framings, obfuscated encodings, language switching, long multi-turn setups — reliably get past it. Input/output filtering adds an independent layer: classifiers outside the model inspecting what goes in and what comes out, so a prompt that defeats the model's own refusal behaviour still has to defeat a system that was never in the conversation.</p>
+  <p>The chapter's other half is the misuse case rather than the scheming case: the model is not the adversary, the user is. Safety training already refuses obvious requests, but <span class="term" data-term="jailbreak">jailbreaks</span> — role-play framings, obfuscated encodings, language switching, long multi-turn setups — reliably get past it. Input/output filtering adds an independent layer: classifiers outside the model inspecting what goes in and what comes out, so a prompt that defeats the model's own refusal behaviour still has to defeat a system that was never in the conversation.</p>
 
   <p>Anthropic's <a class="lnk" href="https://www.anthropic.com/news/constitutional-classifiers" target="_blank" rel="noopener">Constitutional Classifiers</a> is the flagship result. The classifiers train on synthetic data generated from a written constitution of what is and is not allowed, which makes the policy explicit and editable rather than baked into weights. Carry the February 2025 numbers: jailbreak success fell from roughly 86% unguarded to about 4.4%; refusals on harmless traffic rose 0.38%, not statistically significant; inference overhead 23.7%. Three thousand hours of paid red-teaming found no universal jailbreak against the guarded system.</p>
 
-  <p>That 23.7% is a real deployment tax, and the follow-up on <a class="lnk" href="https://alignment.anthropic.com/2025/cheap-monitors/" target="_blank" rel="noopener">cheap monitors</a> attacks it by re-using the policy model's own activations instead of a separate classifier pass — linear probes on hidden states reach comparable performance at near-zero marginal compute, last-layer fine-tuning at about 4%. If that survives adaptive attack, filtering stops being rationed and becomes always-on.</p>
+  <p>That 23.7% is a real deployment tax, and the follow-up on <a class="lnk" href="https://alignment.anthropic.com/2025/cheap-monitors/" target="_blank" rel="noopener">cheap monitors</a> attacks it by re-using the policy model's own <span class="term" data-term="activation">activations</span> instead of a separate classifier pass — linear <span class="term" data-term="linear-probe">probes</span> on hidden states reach comparable performance at near-zero marginal compute, last-layer <span class="term" data-term="fine-tuning">fine-tuning</span> at about 4%. If that survives adaptive attack, filtering stops being rationed and becomes always-on.</p>
 
   <h2 id="where-breaks">Where it breaks</h2>
 
@@ -81,9 +83,14 @@
 
   <p><b>Somebody has to write the constitution.</b> Explicit policy beats implicit policy precisely because it is contestable — which puts who writes it, and by what legitimacy, on the table rather than buried in preference data.</p>
 
-  <p><b>Chronic harm hides under the threshold.</b> Control evaluations are framed around discrete catastrophic actions — the backdoor, the exfiltration. Slow, distributed, individually-innocuous degradation of research quality or institutional decision-making trips no monitor tuned for acute events, and it is not clear what an audit budget even means for it.</p>
+  <p><b>Chronic harm hides under the threshold.</b> Control evaluations are framed around discrete catastrophic actions — the backdoor, the <span class="term" data-term="exfiltration">exfiltration</span>. Slow, distributed, individually-innocuous degradation of research quality or institutional decision-making trips no monitor tuned for acute events, and it is not clear what an audit budget even means for it.</p>
 
   <p><b>Adaptive attackers.</b> Every number here is measured against a fixed red team; real attackers iterate against the deployed system for as long as it exists. "No universal jailbreak in 3,000 hours" is strong evidence, not a guarantee.</p>
+
+  <section id="definitions">
+    <h2>Definitions</h2>
+    <div data-terms-list></div>
+  </section>
 
   <h2 id="readings">Readings, linked</h2>
   <p>The course budgets 50 minutes and it is nearly all the Miles video. Watch that first — it gives you the game-theoretic picture that the two BlueDot explainers then fill in — then read the two explainers, then skim the Anthropic post for the numbers. The 80,000 Hours episode is optional and long, but it is the best single source on what practitioners actually think control can and cannot do.</p>
@@ -115,6 +122,7 @@
   <div class="callout">Next: <a class="lnk" href="../unit5/ch2.html">Building defences</a> · Back to the <a class="lnk" href="../index.html#u5">map</a>.</div>
 </main>
 <footer>Original explanation of BlueDot Impact's Technical AI Safety course, unit 5 chapter 1. Course text © BlueDot Impact; this page links, it does not copy.</footer>
+<script src="https://idvorkin-ai-tools.github.io/assets/terms.js" defer></script>
 <!-- Private comments mode, inert unless ?annotate=1 (see assets/annotate.js in idvorkin-ai-tools.github.io) -->
 <script src="https://idvorkin-ai-tools.github.io/assets/annotate.js" defer></script>
 </body>
