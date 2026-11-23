@@ -64,6 +64,12 @@
     // Back/forward restores the changed value from the bfcache; put it back.
     addEventListener('pageshow', function () { sel.value = current; });
     box.classList.add('page-pick');
+    // Comments mode (annotate.js) comments on selected text, so there only the caret opens the
+    // list and the label stays selectable. ponytail: read once at load; toggling comments
+    // mid-page keeps the old hit area until reload.
+    var annot = /[?&]annotate=(1|true|on)\b/.test(location.search);
+    try { annot = annot || (localStorage.getItem('blogAnnotate') === '1' && !/[?&]annotate=(0|false|off)\b/.test(location.search)); } catch (e) {}
+    if (annot) box.classList.add('page-pick-caret');
     box.appendChild(sel);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

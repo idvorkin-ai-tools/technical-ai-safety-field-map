@@ -42,6 +42,8 @@ main{max-width:var(--maxw);margin:0 auto;padding:54px 22px 40px}
 .eyebrow .page-pick::after{content:" \25BE";letter-spacing:0}
 .eyebrow .page-pick:hover{filter:brightness(1.2)}
 .eyebrow .page-pick:focus-within{outline:2px solid var(--def);outline-offset:3px;border-radius:3px}
+.eyebrow .page-pick-caret{cursor:text}
+.page-pick-caret .page-select{left:auto;width:1.4em}
 .page-select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:16px;margin:0;border:0;padding:0;color:var(--ink);background:var(--panel);color-scheme:dark;text-transform:none;letter-spacing:normal;font-family:"IBM Plex Mono",ui-monospace,monospace}
 h1{font-family:"IBM Plex Mono";font-weight:700;font-size:clamp(28px,5vw,42px);line-height:1.08;
   margin:0 0 10px;letter-spacing:-.01em}
